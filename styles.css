@@ -1,15 +1,30 @@
 /* styles.css */
 
 /* Global Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+@font-face {
+    font-family: 'Cairo';
+    src: url('Cairo-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
   }
   
+  @font-face {
+    font-family: 'Cairo';
+    src: url('Cairo-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: 'Cairo', Arial, sans-serif;
+    /* Rest of your CSS code */
+  }
+
+
+
 /* Header Styles */
 header {
-    background-color: #333;
+    background-color: #696969;
     color: #fff;
     padding: 20px;
     display: flex;
@@ -17,9 +32,11 @@ header {
   }
   
   header img {
-    max-width: 100px; /* Adjust the value to your desired size */
+    max-width: 80px; /* Adjust the value to your desired size */
     height: auto;
     margin-right: 10px; /* Add some spacing between the logo and name */
+    margin-left: 10px; /* Add some spacing between the logo and name */
+
   }
   
   header h1 {
@@ -40,6 +57,10 @@ header {
     color: #666;
   }
   
+  #contact p a:hover {
+    text-decoration: underline;
+  }
+
   .social-icons {
     margin-top: 10px; /* Add spacing between the contact information and social icons */
   }
@@ -66,7 +87,7 @@ header {
   
   /* Footer Styles */
   footer {
-    background-color: #333;
+    background-color: #696969;
     color: #fff;
     padding: 10px;
     text-align: center;
@@ -94,6 +115,8 @@ header {
       padding: 5px;
     }
   }
+
+
 
   #language-selector {
     position: fixed;
