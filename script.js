@@ -23,7 +23,7 @@ let lang = {
       skillspyth: "Python",
 
       sontact: "للتواصل",
-      contactemailCont: 'Email: <a href="mailto:abdullah@aashenaifi.com">abdullah@aashenaifi.com</a>', 
+      contactemailCont: 'البريد الإلكتروني:abdullah@aashenaifi.com',
     contactphoneCont: "رقم الجوال: 0554337765",
 
     Rights: "جميع الحقوق محفوظة لعبدالله الشنيفي © 2024",
@@ -53,7 +53,7 @@ let lang = {
       skillspyth: "Python",
 
       sontact: "Contact",
-      contactemailCont: 'Email: <a href="mailto:abdullah@aashenaifi.com">abdullah@aashenaifi.com</a>',  
+      contactemailCont: 'Email:abdullah@aashenaifi.com',  
       contactphoneCont: "Phone: 0554337765",
 
       Rights: "2024 Abdullah Alshenaifi. All rights reserved.",
