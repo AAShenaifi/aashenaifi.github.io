@@ -23,6 +23,7 @@ let lang = {
       skillspyth: "Python",
 
       CV: "سيرتي الذاتية",
+      CVDownload: "لتحميل ملف السيرة الذاتية",
 
       contact: "للتواصل",
       contactemailCont: 'البريد الإلكتروني:abdullah@aashenaifi.com', 
@@ -58,6 +59,7 @@ let lang = {
       skillspyth: "Python",
 
       CV: "My CV",
+      CVDownload: "to download the CV",
 
       contact: "Contact",
       contactemailCont: 'Email:abdullah@aashenaifi.com',  
@@ -85,24 +87,37 @@ let lang = {
     let pdfEmbed = document.getElementById("pdfEmbed");
     if (language === "ar") {
       pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
+      pdfEmbed.href = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
+
       document.dir = "rtl";
     } else {
       pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer En.pdf";
+      pdfEmbed.href = "Abdullah Alshenaifi Electronics Engineer En.pdf";
+
       document.dir = "ltr";
     }
   }
   
-  updateLanguage(); // Call the function initially to set the initial language
 
-  /*
-  function changeLanguage() {
-    var selector = document.getElementById("language-selector");
-    var pdfEmbed = document.getElementById("pdfEmbed");
-    var selectedLanguage = selector.value;
+  let downloadLink = document.getElementById("downloadLink");
+  downloadLink.addEventListener("click", handleDownload);
   
-    if (language === "en") {
-      pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer En.pdf";
-    } else if (language === "ar") {
-      pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
-    }
-  } */
+  function handleDownload(event) {
+    event.preventDefault();
+    let language = selector.value;
+    let filename = (language === "ar") ? "Abdullah Alshenaifi Electronics Engineer Ar.pdf" : "Abdullah Alshenaifi Electronics Engineer En.pdf";
+    downloadPdf(filename);
+  }
+  
+  function downloadPdf(filename) {
+    let link = document.createElement('a');
+    link.href = filename;
+    link.download = filename;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+  
+
+  updateLanguage(); // Call the function initially to set the initial language
