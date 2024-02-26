@@ -34,7 +34,10 @@ header {
 
 
   header h1 {
-    font-family: 'Cairo Black', Arial, sans-serif;
+  font-family: "Cairo", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
     margin: 0;
   }
   /* Contact Section Styles */
