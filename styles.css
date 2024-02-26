@@ -27,7 +27,12 @@ header {
     margin-left: 30px; /* Add some spacing between the logo and name */
 
   }
-  
+
+.title {
+  white-space: nowrap;
+}
+
+
   header h1 {
     font-family: 'Cairo Black', Arial, sans-serif;
     margin: 0;
