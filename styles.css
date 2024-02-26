@@ -40,6 +40,13 @@ header {
   font-style: normal;
     margin: 0;
   }
+  header h2 {
+    font-family: "Cairo", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 750;
+    font-style: normal;
+      margin: 0;
+    }
   /* Contact Section Styles */
 #contact {
   padding: 10px;
