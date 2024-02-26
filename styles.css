@@ -128,3 +128,9 @@ header {
     text-decoration: underline; /* Remove the underline */
     color: #000; /* Change the color to your desired color */
   }
+
+  .CV-link a {
+    font-size: 1rem; /* Adjust the value to your desired h3 size */
+    text-decoration: underline; /* Remove the underline */
+    color: #000; /* Change the color to your desired color */
+  }
