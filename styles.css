@@ -23,8 +23,8 @@ header {
   header img {
     max-width: 80px; /* Adjust the value to your desired size */
     height: auto;
-    margin-right: 40px; /* Add some spacing between the logo and name */
-    margin-left: 30px; /* Add some spacing between the logo and name */
+    margin-right: 20px; /* Add some spacing between the logo and name */
+    margin-left: 20px; /* Add some spacing between the logo and name */
 
   }
 
