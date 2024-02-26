@@ -22,9 +22,14 @@ let lang = {
       skillsCpp: "C++",
       skillspyth: "Python",
 
-      sontact: "للتواصل",
-      contactemailCont: 'البريد الإلكتروني:abdullah@aashenaifi.com',
+      CV: "سيرتي الذاتية",
+
+      contact: "للتواصل",
+      contactemailCont: 'البريد الإلكتروني:abdullah@aashenaifi.com', 
+      
     contactphoneCont: "رقم الجوال: 0554337765",
+    addmetocontact: "أضفني إلى جهات اتصالك",
+
 
     Rights: "جميع الحقوق محفوظة لعبدالله الشنيفي © 2024",
     },
@@ -32,7 +37,7 @@ let lang = {
     en: {
       name: "Abdullah Alshenaifi",
       desc: "Electronics Engineer",
-      about: "Electronics Engineer",
+      about: "About me",
       aboutCont: "An electronics engineer with experience in the field of IOT and 3D printing. A member of the IOT for Arab group. Interested in emerging technologies and ready to use my skills and knowledge to contribute to the development of the work environment.",
       project: "Projects",
       projectgrad: "Graduation Project",
@@ -52,9 +57,14 @@ let lang = {
       skillsCpp: "C++",
       skillspyth: "Python",
 
-      sontact: "Contact",
+      CV: "My CV",
+
+      contact: "Contact",
       contactemailCont: 'Email:abdullah@aashenaifi.com',  
       contactphoneCont: "Phone: 0554337765",
+      
+      addmetocontact: "Add me to your Contacts",
+
 
       Rights: "2024 Abdullah Alshenaifi. All rights reserved.",
     },
@@ -67,17 +77,32 @@ let lang = {
     let language = selector.value;
     let nodes = document.querySelectorAll('[data-lang]');
   
-    
     nodes.forEach(node => {
       let key = node.getAttribute('data-lang');
       node.textContent = lang[language][key];
     });
-    if (language === "ar"){
-        document.dir = "rtl";
-    }
-    else {
-        document.dir = "ltr";
+  
+    let pdfEmbed = document.getElementById("pdfEmbed");
+    if (language === "ar") {
+      pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
+      document.dir = "rtl";
+    } else {
+      pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer En.pdf";
+      document.dir = "ltr";
     }
   }
   
   updateLanguage(); // Call the function initially to set the initial language
+
+  /*
+  function changeLanguage() {
+    var selector = document.getElementById("language-selector");
+    var pdfEmbed = document.getElementById("pdfEmbed");
+    var selectedLanguage = selector.value;
+  
+    if (language === "en") {
+      pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer En.pdf";
+    } else if (language === "ar") {
+      pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
+    }
+  } */
