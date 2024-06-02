@@ -10,7 +10,7 @@ let lang = {
       projectpeople: "مشروع غرفة الأشخاص ذوي الإعاقة ",
       projectpeopleCont: "غرفة ذكية بالتحكم عن طريق الجوال باستخدام انترنت الأشياء",
       
-      //add later 
+
       langs: "اللغات",
       langsCont: "العربية , الأنجليزية",
 
@@ -120,4 +120,4 @@ let lang = {
   }
   
 
-  updateLanguage(); // Call the function initially to set the initial language
+  updateLanguage(); 
