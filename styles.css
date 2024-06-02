@@ -1,30 +1,28 @@
-/* styles.css */
 
-/* Global Styles */
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
 
   
   body {
     font-family: 'Cairo', Arial, sans-serif;
-    /* Rest of your CSS code */
+
   }
 
 
 
-/* Header Styles */
+
 header {
     background-color: #696969;
     color: #fff;
     padding: 10px;
     display: flex;
-    align-items: center; /* Align items vertically */
+    align-items: center; 
   }
   
   header img {
-    max-width: 80px; /* Adjust the value to your desired size */
+    max-width: 80px; 
     height: auto;
-    margin-right: 20px; /* Add some spacing between the logo and name */
-    margin-left: 20px; /* Add some spacing between the logo and name */
+    margin-right: 20px; 
+    margin-left: 20px; 
 
   }
 
@@ -47,11 +45,11 @@ header {
     font-style: normal;
       margin: 0;
     }
-  /* Contact Section Styles */
+
 #contact {
   padding: 10px;
-  margin-top: 10; /* Add spacing between the content and contact section */
-  background-color: #f0f0f0; /* Add a background color to the contact section */
+  margin-top: 10; 
+  background-color: #f0f0f0; 
 }
 
 #contact h2 {
@@ -64,37 +62,23 @@ header {
 
 
 .social-icons {
-  margin-top: 10px; /* Add spacing between the contact information and social icons */
+  margin-top: 10px; 
 }
 
 .social-icons a {
   color: #333;
   font-size: 20px;
-  margin-right: 10px; /* Add spacing between the social icons */
+  margin-right: 10px; 
 }
 
   
-  /* Footer Styles 
-  footer {
-    background-color: #696969;
-    color: #fff;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  footer p {
-    margin: 0;
-  }
-  */ 
-
-  /* Media Queries */
   @media (max-width: 600px) {
     header h1 {
       font-size: 24px;
     }
   
     header img {
-      max-width: 80px; /* Adjust the value to your desired size */
+      max-width: 80px; 
     }
   
     section {
@@ -115,19 +99,19 @@ header {
   }
   
   .project-link a {
-    font-size: 1.2rem; /* Adjust the value to your desired h3 size */
-    text-decoration: underline; /* Remove the underline */
-    color: #000; /* Change the color to your desired color */
+    font-size: 1.2rem; 
+    text-decoration: underline; 
+    color: #000;
   }
 
   .addme-link a {
-    font-size: 1rem; /* Adjust the value to your desired h3 size */
-    text-decoration: underline; /* Remove the underline */
-    color: #000; /* Change the color to your desired color */
+    font-size: 1rem; 
+    text-decoration: underline;
+    color: #000; 
   }
 
   .CV-link a {
-    font-size: 1rem; /* Adjust the value to your desired h3 size */
-    text-decoration: underline; /* Remove the underline */
-    color: #000; /* Change the color to your desired color */
+    font-size: 1rem; 
+    text-decoration: underline; 
+    color: #000;
   }
