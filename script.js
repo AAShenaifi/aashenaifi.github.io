@@ -73,51 +73,31 @@ let lang = {
   };
   
   let selector = document.getElementById('language-selector');
-  selector.addEventListener('change', updateLanguage);
-  
-  function updateLanguage() {
-    let language = selector.value;
-    let nodes = document.querySelectorAll('[data-lang]');
-  
-    nodes.forEach(node => {
-      let key = node.getAttribute('data-lang');
-      node.textContent = lang[language][key];
-    });
-  
-    let pdfEmbed = document.getElementById("pdfEmbed");
-    if (language === "ar") {
-      pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
-      pdfEmbed.href = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
+selector.addEventListener('change', updateLanguage);
 
-      document.dir = "rtl";
-    } else {
-      pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer En.pdf";
-      pdfEmbed.href = "Abdullah Alshenaifi Electronics Engineer En.pdf";
+function updateLanguage() {
+  let language = selector.value;
+  let nodes = document.querySelectorAll('[data-lang]');
 
-      document.dir = "ltr";
-    }
-  }
-  
+  nodes.forEach(node => {
+    let key = node.getAttribute('data-lang');
+    node.textContent = lang[language][key];
+  });
 
+  let pdfEmbed = document.getElementById("pdfEmbed");
   let downloadLink = document.getElementById("downloadLink");
-  downloadLink.addEventListener("click", handleDownload);
-  
-  function handleDownload(event) {
-    event.preventDefault();
-    let language = selector.value;
-    let filename = (language === "ar") ? "Abdullah Alshenaifi Electronics Engineer Ar.pdf" : "Abdullah Alshenaifi Electronics Engineer En.pdf";
-    downloadPdf(filename);
+  if (language === "ar") {
+    pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
+    downloadLink.href = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
+    document.dir = "rtl";
+  } else {
+    pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer En.pdf";
+    downloadLink.href = "Abdullah Alshenaifi Electronics Engineer En.pdf";
+    document.dir = "ltr";
   }
-  
-  function downloadPdf(filename) {
-    let link = document.createElement('a');
-    link.href = filename;
-    link.download = filename;
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-  
+}
 
-  updateLanguage(); 
+// Removed the handleDownload function as it's no longer necessary
+// The download link will work directly with the updated href attribute
+
+updateLanguage(); // Call this function to set the initial language on page load
