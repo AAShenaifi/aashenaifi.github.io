@@ -87,11 +87,11 @@ function updateLanguage() {
   let pdfEmbed = document.getElementById("pdfEmbed");
   let downloadLink = document.getElementById("downloadLink");
   if (language === "ar") {
-    pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer Ar.pdf#zoom=100";
+    pdfEmbed.src = "https://drive.google.com/file/d/16Vvo1pywdQGr30anaZKNyo-XwunGXnWg/preview#zoom=100";
     downloadLink.href = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
     document.dir = "rtl";
   } else {
-    pdfEmbed.src = "Abdullah Alshenaifi Electronics Engineer En.pdf#zoom=100";
+    pdfEmbed.src = "https://drive.google.com/file/d/1zMnf262kZusNLfbncY3g35Rk0faL3a0n/preview#zoom=100";
     downloadLink.href = "Abdullah Alshenaifi Electronics Engineer En.pdf";
     document.dir = "ltr";
   }
