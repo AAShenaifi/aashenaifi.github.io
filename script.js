@@ -97,7 +97,5 @@ function updateLanguage() {
   }
 }
 
-// Removed the handleDownload function as it's no longer necessary
-// The download link will work directly with the updated href attribute
 
-updateLanguage(); // Call this function to set the initial language on page load
+updateLanguage(); 
