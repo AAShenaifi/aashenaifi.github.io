@@ -104,6 +104,15 @@ header {
     color: #000;
   }
 
+  .Vcount a {
+    margin-right: 10px; 
+
+    font-size: 1rem; 
+    text-decoration: none;
+    color: #000; 
+  }
+
+
   .addme-link a {
     font-size: 1rem; 
     text-decoration: underline;
