@@ -30,6 +30,7 @@ let lang = {
       
     contactphoneCont: "رقم الجوال: 0554337765",
     addmetocontact: "أضفني إلى جهات اتصالك",
+    Visit: "عدد الزوار",
 
 
     Rights: "جميع الحقوق محفوظة لعبدالله الشنيفي © 2024",
@@ -66,6 +67,7 @@ let lang = {
       contactphoneCont: "Phone: 0554337765",
       
       addmetocontact: "Add me to your Contacts",
+      Visit: "Visitor Counter",
 
 
       Rights: "2024 Abdullah Alshenaifi. All rights reserved.",
