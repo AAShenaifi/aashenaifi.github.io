@@ -3,7 +3,13 @@ let lang = {
       name: "عبدالله الشنيفي",
       desc: "مهندس إلكترونيات",
       about: "عني",
-      aboutCont: "مهندس إلكترونيات مع خبرة في مجال أنترنت الأشياء والطباعة ثلاثية الأبعاد. عضو في مجموعة أنترنت الأشياء. مهتم بالتقنيات الناشئة ومستعد لاستخدام مهاراتي ومعرفتي للمساهمة في تطوير بيئة العمل.",
+      aboutCont: "مهندس إلكترونيات طموح , مع خبرة في مجالات أنترنت الأشياء والطباعة ثلاثية الأبعاد, شريك المالك في علامات للروبوتات,حيث قمت بتصميم الإلكترونيات لمشاريع روبوتية متنوعة. شغوف بالتقنيات الناشئة، ومستعد لاستخدام مهاراتي ومعرفتي لتمكين الابتكار وتحسين بيئة العمل, معتمد كمهندس من قبل الهيئة السعودية للمهندسين (SEC).",
+    
+      Exp: "الخبرات",
+      alamat: "علامات للروبوتات",
+      Co: "شريك المالك",
+
+    
       project: "المشاريع",
       projectgrad: "مشروع التخرج",
       projectgradCont: "نظام مراقبة المياه للشقق والمنازل المشتركة, باستخدام أنترنت الاشياء, الطباعة ثلاثية الأبعاد, وتحليل البيانات ",
@@ -15,12 +21,15 @@ let lang = {
       langsCont: "العربية , الأنجليزية",
 
       skills: "المهارات",
-      skillsard: "Arduino IDE",
+      skillsard: "برمجة الأردوينو",
       skillsprut: "Proteus",
       skillsmicr: "MicroC",
       skillsoffi: "برامج الأوفيس",
       skillsCpp: "C++",
-      skillspyth: "Python",
+      skillssold: " لحام THT و SMD ",
+      skills3d: "تصميم وطباعة ثلاثي الابعاد ",
+      skillsplc: "برمجة الحاكمات القابلة للبرمجة",
+    
 
       CV: "سيرتي الذاتية",
       CVDownload: "لتحميل ملف السيرة الذاتية",
@@ -40,8 +49,13 @@ let lang = {
       name: "Abdullah Alshenaifi",
       desc: "Electronics Engineer",
       about: "About me",
-      aboutCont: "An electronics engineer with experience in the field of IOT and 3D printing. A member of the IOT for Arab group. Interested in emerging technologies and ready to use my skills and knowledge to contribute to the development of the work environment.",
-      project: "Projects",
+      aboutCont: "An ambitious electronics engineer with previous experience in Internet of Things (IOT) and 3D printing. Co-owner of Alamat Robotics, where I engineered electronics for various robotics projects. Passionate about emerging technologies, and ready to leverage my skills and knowledge to drive innovation and enhance the work environment. Accredited as an Engineer by the Saudi Council of Engineers (SEC).",
+        
+      Exp: "Experience",
+      alamat: "Alamat Robotics",
+      Co: "Co-Owner",
+        
+        project: "Projects",
       projectgrad: "Graduation Project",
       projectgradCont: "A water monitoring system for shared apartments and houses, using IoT, 3D printing, and data analysis.",
       projectpeople: "People with Disabilities' Room Project",
@@ -52,13 +66,15 @@ let lang = {
       langsCont: "Arabic , english",
 
       skills: "Skills",
-      skillsard: "Arduino IDE",
+      skillsard: "Arduino Programing",
       skillsprut: "Proteus",
       skillsmicr: "MicroC",
       skillsoffi: "Microsoft Office",
       skillsCpp: "C++",
-      skillspyth: "Python",
-
+      skillssold: "Soldering SMT and THT",
+      skills3d: "3D Modeling and Printing",
+      skillsplc: "PLC programming",
+        
       CV: "My CV",
       CVDownload: "to download the CV",
 
