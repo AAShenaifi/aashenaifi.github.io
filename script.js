@@ -6,8 +6,10 @@ let lang = {
       aboutCont: "مهندس إلكترونيات طموح , مع خبرة في مجالات أنترنت الأشياء والطباعة ثلاثية الأبعاد, شريك المالك في علامات للروبوتات,حيث قمت بتصميم الإلكترونيات لمشاريع روبوتية متنوعة. شغوف بالتقنيات الناشئة، ومستعد لاستخدام مهاراتي ومعرفتي لتمكين الابتكار وتحسين بيئة العمل, معتمد كمهندس من قبل الهيئة السعودية للمهندسين (SEC).",
     
       Exp: "الخبرات",
-      alamat: "علامات للروبوتات",
-      Co: "شريك المالك",
+  Zoujaj: "The National Company for Glass Industries",
+  ZoujajTitle: "Electronics Engineer",
+  Alamat: "Alamat Robotics",
+  AlamatTitle: "Co-Owner",
 
     
       project: "المشاريع",
@@ -52,8 +54,10 @@ let lang = {
       aboutCont: "An ambitious electronics engineer with previous experience in Internet of Things (IOT) and 3D printing. Co-owner of Alamat Robotics, where I engineered electronics for various robotics projects. Passionate about emerging technologies, and ready to leverage my skills and knowledge to drive innovation and enhance the work environment. Accredited as an Engineer by the Saudi Council of Engineers (SEC).",
         
       Exp: "Experience",
-      alamat: "Alamat Robotics",
-      Co: "Co-Owner",
+  Zoujaj: "The National Company for Glass Industries",
+  ZoujajTitle: "Electronics Engineer",
+  Alamat: "Alamat Robotics",
+  AlamatTitle: "Co-Owner",
         
         project: "Projects",
       projectgrad: "Graduation Project",
