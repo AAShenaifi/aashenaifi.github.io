@@ -11,9 +11,9 @@ let lang = {
   Alamat: "علامات للروبوتات",
   AlamatTitle: "شريك المالك",
   PNU: "جامعة الأميرة نورة بنت عبدالرحمن",
-  PNUTitle: "محاضر (يناير 2025 – يونيو 2025)",
+  PNUTitle: "محاضر (يناير 2025 – يونيو 2025)",
   Tuwaiq: "أكاديمية طويق",
-  TuwaiqTitle: "مدرب (يوليو 2024 – أغسطس 2024)",
+  TuwaiqTitle: "مدرب (يوليو 2024 – أغسطس 2024)",
 
     
       project: "المشاريع",
@@ -63,9 +63,9 @@ let lang = {
   Alamat: "Alamat Robotics",
   AlamatTitle: "Co-Owner",
   PNU: "Princess Nourah Bint Abdulrahman University",
-  PNUTitle: "Lecturer (Jan 2025 – Jun 2025)",
+PNUTitle: "Lecturer (Jan 2025 – Jun 2025)",
   Tuwaiq: "Tuwaiq Academy",
-  TuwaiqTitle: "Instructor (Jul 2024 – Aug 2024)",
+TuwaiqTitle: "Instructor (Jul 2024 – Aug 2024)",        
         
         project: "Projects",
       projectgrad: "Graduation Project",
