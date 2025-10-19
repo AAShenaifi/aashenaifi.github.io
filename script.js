@@ -3,7 +3,7 @@ let lang = {
       name: "عبدالله الشنيفي",
       desc: "مهندس إلكترونيات",
       about: "عني",
-      aboutCont: "مهندس إلكترونيات طموح , مع خبرة في مجالات أنترنت الأشياء والطباعة ثلاثية الأبعاد, شريك المالك في علامات للروبوتات,حيث قمت بتصميم الإلكترونيات لمشاريع روبوتية متنوعة. شغوف بالتقنيات الناشئة، ومستعد لاستخدام مهاراتي ومعرفتي لتمكين الابتكار وتحسين بيئة العمل, معتمد كمهندس من قبل الهيئة السعودية للمهندسين (SEC).",
+      aboutCont: "مهندس إلكترونيات طموح وعضو محترف في IEEE، بخبرة في إنترنت الأشياء والروبوتات وأنظمة التحكم. أعمل حاليًا مهندسَ إلكترونيات في الشركة الوطنية لصناعة الزجاج (زجاج)، ومتخصصًا في صيانة الأنظمة الصناعية واستكشاف الأعطال والأتمتة وتحسين الأداء. عملت سابقًا محاضرًا في جامعة الأميرة نورة بنت عبد الرحمن، وقدمت تدريبًا عمليًا في برمجة الأردوينو والأنظمة المضمنة وتكامل الميكاترونكس. شريك مؤسس في علامات للروبوتات، حيث طورت إلكترونيات متقدمة وتصميمات دوائر مطبوعة لمشاريع روبوتية وحلول طباعة ثلاثية الأبعاد. لدي خبرة في التدريب التقني وتصميم النماذج الأولية والبحث التطبيقي، ومعتمد مهنيًا من الهيئة السعودية للمهندسين (SEC).",
     
       Exp: "الخبرات",
   Zoujaj: "شركة الصناعات الزجاجية الوطنية",
@@ -55,7 +55,7 @@ let lang = {
       name: "Abdullah Alshenaifi",
       desc: "Electronics Engineer",
       about: "About me",
-      aboutCont: "An ambitious electronics engineer with previous experience in Internet of Things (IOT) and 3D printing. Co-owner of Alamat Robotics, where I engineered electronics for various robotics projects. Passionate about emerging technologies, and ready to leverage my skills and knowledge to drive innovation and enhance the work environment. Accredited as an Engineer by the Saudi Council of Engineers (SEC).",
+      aboutCont: "An ambitious Electronics Engineer and IEEE Professional Member with a strong foundation in IoT, robotics, and control systems. Currently serving as an Electronics Engineer at the National Company for Glass Industries (Zoujaj), specializing in troubleshooting, automation, and industrial systems optimization. Formerly a lecturer at Princess Nourah bint Abdulrahman University, delivering practical training in Arduino programming, embedded systems, and mechatronics integration. Co-owner of Alamat Robotics, where advanced electronics and PCB designs were developed for robotics and 3D-printing projects. Experienced in technical instruction, product prototyping, and applied research, and professionally accredited by the Saudi Council of Engineers (SEC).",
         
       Exp: "Experience",
   Zoujaj: "The National Company for Glass Industries",
@@ -129,3 +129,4 @@ function updateLanguage() {
 
 
 updateLanguage(); 
+
