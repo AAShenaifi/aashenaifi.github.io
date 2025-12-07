@@ -121,7 +121,7 @@ function updateLanguage() {
     downloadLink.href = "Abdullah Alshenaifi Electronics Engineer Ar.pdf";
     document.dir = "rtl";
   } else {
-    pdfEmbed.src = "https://drive.google.com/file/d/12TKgFhOvbwiTSVavMNrXdPYs5umi1jTv/preview#zoom=100";
+    pdfEmbed.src = "https://drive.google.com/file/d/1cZEHZxhMUXIjrr1uLzr6WmE1njrH8laO/preview#zoom=100";
     downloadLink.href = "Abdullah Alshenaifi Electronics Engineer En.pdf";
     document.dir = "ltr";
   }
@@ -129,4 +129,5 @@ function updateLanguage() {
 
 
 updateLanguage(); 
+
 
