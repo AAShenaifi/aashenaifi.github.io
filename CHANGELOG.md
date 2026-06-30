@@ -4,6 +4,47 @@ All commits by **Abdullah AlShenaifi**, ordered newest to oldest.
 
 ---
 
+## Deployments (GitHub Pages — `pages-build-deployment`)
+
+30 runs total · **26 succeeded** · **4 cancelled** · **0 failed** · All on `main` branch
+
+> Cancelled runs are caused by rapid back-to-back pushes (delete → re-upload within seconds); GitHub Pages cancels the superseded run automatically.
+
+| Run # | Date (UTC) | Status | Triggered by |
+|------:|------------|--------|--------------|
+| 105 | 2026-01-22 | ✅ success | Add files via upload |
+| 104 | 2026-01-22 | ⚠️ cancelled | Delete Abdullah Alshenaifi Electronics Engineer Ar.pdf |
+| 103 | 2026-01-22 | ✅ success | Add files via upload |
+| 102 | 2026-01-22 | ✅ success | Delete Abdullah Alshenaifi Electronics Engineer En.pdf |
+| 101 | 2026-01-11 | ✅ success | Update index.html |
+| 100 | 2025-12-07 | ✅ success | Update script.js |
+| 99 | 2025-12-07 | ✅ success | Update index.html |
+| 98 | 2025-12-07 | ✅ success | Update index.html |
+| 97 | 2025-12-07 | ✅ success | Update index.html |
+| 96 | 2025-12-07 | ✅ success | Update CV in index.html |
+| 95 | 2025-12-07 | ✅ success | Add files via upload |
+| 94 | 2025-12-07 | ⚠️ cancelled | Delete Abdullah Alshenaifi Electronics Engineer En.pdf |
+| 93 | 2025-10-19 | ✅ success | Update About me index.html |
+| 92 | 2025-10-19 | ✅ success | Update About me script.js |
+| 91 | 2025-10-19 | ✅ success | Update index about.html |
+| 90 | 2025-10-19 | ✅ success | Rename CV PDF (double extension fix) |
+| 89 | 2025-10-19 | ✅ success | Add files via upload |
+| 88 | 2025-10-19 | ⚠️ cancelled | Delete Abdullah Alshenaifi Electronics Engineer En.pdf |
+| 87 | 2025-07-06 | ✅ success | Update script.js |
+| 86 | 2025-07-06 | ✅ success | Update script.js |
+| 85 | 2025-07-06 | ✅ success | Update index.html |
+| 84 | 2025-07-06 | ✅ success | Update styles.css |
+| 83 | 2025-07-06 | ✅ success | Update index.html |
+| 82 | 2025-07-06 | ✅ success | Update index.html |
+| 81 | 2025-07-06 | ✅ success | Update script.js |
+| 80 | 2025-07-06 | ✅ success | Update index.html |
+| 79 | 2025-07-06 | ✅ success | Update index.html |
+| 78 | 2025-07-06 | ⚠️ cancelled | Update script.js |
+| 77 | 2025-07-06 | ✅ success | Update index.html |
+| 76 | 2025-07-05 | ✅ success | Add files via upload |
+
+---
+
 ## 2026
 
 ### January 22, 2026
