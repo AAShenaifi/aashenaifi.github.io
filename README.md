@@ -58,8 +58,3 @@ All data in `content.json` is public portfolio information; it is safe in a publ
 
 ---
 
-## Local preview
-
-```bash
-python -m http.server 5500
-```
