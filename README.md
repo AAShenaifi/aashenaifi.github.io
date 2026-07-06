@@ -1,74 +1,65 @@
-<div align="center">
+<p align="center"><img src="logo-anim.svg" width="180" alt="Abdullah Alshenaifi logo"/></p> 
+    
+# Abdullah Alshenaifi — Portfolio Website
 
-<img src="logo-anim.svg" width="140" alt="Logo" />
-
-# Abdullah Alshenaifi
-
-### Electronics Engineer · IoT · Embedded Systems · Robotics
-
-[![Website](https://img.shields.io/badge/site-aashenaifi.com-80519f?style=for-the-badge)](https://aashenaifi.com)
-[![Status](https://img.shields.io/badge/status-online-22c55e?style=for-the-badge)](https://aashenaifi.com)
-
-</div>
-
-<br/>
-
-<div align="center">
-
-**[🌐 View the live site → aashenaifi.com](https://aashenaifi.com)**
-
-</div>
-
-<br/>
+Personal portfolio for Abdullah Alshenaifi, Electronics Engineer.  
+Live at: **[aashenaifi.com](https://aashenaifi.com)**
 
 ---
 
-<br/>
+## Files
 
-## ⚙️ Overview
+| File | Description |
+|---|---|
+| `index.html` | The entire website — self-contained, no build step |
+| `content.json` | Runtime content (projects, experience, skills, socials). Edited via dashboard |
+| `logo.glb` | Interactive 3D logo model (hero section, drag to rotate) |
+| `logo-anim.svg` | Animated circuit-trace logo (boot sequence + 3D fallback) |
+| `CV-Abdullah-Alshenaifi-EN.pdf` | English CV (served via the CV section buttons) |
 
-A portfolio built around hardware, not just software — embedded systems, IoT, PCB design, robotics, and industrial automation, presented with an interactive circuit-board aesthetic.
-
-<br/>
-
-## ✦ Highlights
-
-- 🔌 Interactive 3D logo — drag to rotate
-- 📈 Live oscilloscope-style animation (Sine / Square / PWM / Triangle / Sawtooth / AM / FM)
-- 🌗 Full bilingual support — English / العربية
-- 📄 CV — view and download, both languages
-- 🧰 Projects, tools, and experience showcased in a clean, technical layout
-
-<br/>
-
-## 🛠 Built With
-
-<div align="left">
-
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222222?style=flat-square&logo=github&logoColor=white)
-![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=flat-square&logo=cloudflare&logoColor=white)
-
-</div>
-
-<br/>
+**Total: 5 files.** No node_modules. No build step. Drop and serve.
 
 ---
 
-<br/>
+## How it works
 
-<div align="center">
+`index.html` loads `content.json` at runtime via `fetch()`. If the JSON is missing the site still works — it falls back to built-in defaults. The 3D model uses the [`<model-viewer>`](https://modelviewer.dev/) web component loaded from jsDelivr CDN.
 
-### Connect
+To update content (projects, experience, links, etc.) edit via the **private dashboard** — it publishes changes to `content.json` in this repo through the GitHub API.
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/AAShenaifi)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AAShenaifi)
-[![X](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/aashenaifi)
+---
 
-<br/>
+## Sections
 
-<sub>© 2026 Abdullah Alshenaifi · All rights reserved</sub>
+- **Boot screen** — animated logo + power-on sequence (skippable)  
+- **Hero** — interactive 3D logo, oscilloscope (Sine / Square / PWM / Triangle / Sawtooth / AM / FM)  
+- **About** — bio, skills  
+- **Projects** — real projects from CV (PCB design, IoT, embedded systems)  
+- **AI Tools** — demo tools built on Netlify (marked in-testing)  
+- **Services** — request form (Formspree or mailto fallback)  
+- **CV** — View + Download buttons (English / Arabic)  
+- **Contact** — links and socials  
+- **Arabic / English** — full bilingual support, Cairo font for both
 
-</div>
+---
+
+## Hosting
+
+Served as a static site on **GitHub Pages** from the repo root.  
+No CI, no build pipeline — GitHub Pages serves `index.html` directly.
+
+---
+
+## Content updates
+
+Content is managed through a **separate private dashboard** (hosted on Netlify).  
+The dashboard authenticates with a fine-grained GitHub token stored only in your browser — never committed here.  
+All data in `content.json` is public portfolio information; it is safe in a public repo.
+
+---
+
+## Local preview
+
+```bash
+python -m http.server 5500
+```

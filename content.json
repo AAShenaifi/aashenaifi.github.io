@@ -10,7 +10,7 @@
     "viewAr": "https://drive.google.com/file/d/16Vvo1pywdQGr30anaZKNyo-XwunGXnWg/view",
     "downloadEn": "CV-Abdullah-Alshenaifi-EN.pdf",
     "downloadAr": "CV-Abdullah-Alshenaifi-AR.pdf",
-    "showPreview": true
+    "showPreview": false
   },
   "sections": {
     "about": true,
@@ -117,7 +117,13 @@
         "IoT",
         "Sensors"
       ],
-      "url": null
+      "url": null,
+      "images": [],
+      "driveUrl": null,
+      "embed3d": null,
+      "reportPdf": null,
+      "presentationVideo": null,
+      "codeFile": null
     },
     {
       "titleEn": "Smart Safety Helmet",
@@ -131,7 +137,13 @@
         "Fall Detection",
         "Telegram"
       ],
-      "url": null
+      "url": null,
+      "images": [],
+      "driveUrl": null,
+      "embed3d": null,
+      "reportPdf": null,
+      "presentationVideo": null,
+      "codeFile": null
     },
     {
       "titleEn": "IoT Water Monitoring — Graduation Project",
@@ -145,7 +157,18 @@
         "SMS",
         "Embedded"
       ],
-      "url": "https://linktr.ee/smartflows"
+      "url": null,
+      "images": [
+        "images/smart-water-metering/schematic.jpg",
+        "images/smart-water-metering/wiring-diagram.png",
+        "images/smart-water-metering/app-dashboard.jpg",
+        "images/smart-water-metering/web-dashboard.png"
+      ],
+      "driveUrl": null,
+      "embed3d": "models/smart-water-metering.glb",
+      "reportPdf": "docs/smart-water-metering/report.pdf",
+      "presentationVideo": "docs/smart-water-metering/presentation.mp4",
+      "codeFile": "code/smart-water-metering/main.ino"
     },
     {
       "titleEn": "Custom Robotics Mainboard PCB",
@@ -159,7 +182,18 @@
         "Robotics",
         "Hardware"
       ],
-      "url": "https://github.com/AAShenaifi/Robots_MainboardPCB"
+      "url": "https://github.com/AAShenaifi/Robots_MainboardPCB",
+      "images": [
+        "images/custom-robotics-mainboard-pcb/schematic.png",
+        "images/custom-robotics-mainboard-pcb/pcb-layout.png",
+        "images/custom-robotics-mainboard-pcb/3d-render-top.png",
+        "images/custom-robotics-mainboard-pcb/3d-render-bottom.png"
+      ],
+      "driveUrl": null,
+      "embed3d": null,
+      "reportPdf": null,
+      "presentationVideo": null,
+      "codeFile": null
     }
   ],
   "tools": [
@@ -168,7 +202,7 @@
       "titleAr": "محاكي شاشات LCD",
       "descEn": "Simulate character-LCD output and generate the matching microcontroller code.",
       "descAr": "محاكاة شاشات LCD النصية وتوليد كود المتحكم المطابق.",
-      "url": "https://lcd-simulatorcode.netlify.app/",
+      "url": "tools/lcd-simulator/",
       "tags": [
         "Embedded",
         "Codegen"
@@ -180,7 +214,7 @@
       "titleAr": "كروما — محوّل الألوان",
       "descEn": "Convert and explore colors across HEX, RGB, HSL and more, with handy palettes.",
       "descAr": "تحويل واستكشاف الألوان بين HEX و RGB و HSL والمزيد مع لوحات جاهزة.",
-      "url": "https://chroma-color-converter.netlify.app",
+      "url": "tools/chroma-color-converter/",
       "tags": [
         "Design",
         "Utility"
@@ -192,7 +226,7 @@
       "titleAr": "محوّل HTML إلى PDF",
       "descEn": "Turn HTML content into clean, downloadable PDF documents in the browser.",
       "descAr": "تحويل محتوى HTML إلى ملفات PDF نظيفة قابلة للتحميل من المتصفح.",
-      "url": "https://htmltopdfconv.netlify.app/",
+      "url": "tools/html-pdf-converter/",
       "tags": [
         "Document",
         "Export"
@@ -204,7 +238,7 @@
       "titleAr": "استوديو معاينة الخطوط",
       "descEn": "Preview, compare and audition typefaces with live custom text and styling.",
       "descAr": "معاينة ومقارنة الخطوط مع نص مخصص حي وتنسيقات مباشرة.",
-      "url": "https://font-preview-studio.netlify.app/",
+      "url": "tools/font-preview-studio/",
       "tags": [
         "Typography",
         "Design"
