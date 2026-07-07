@@ -1223,10 +1223,11 @@ function updatePreview(){
   document.getElementById('sts').textContent=fs+'px';
   document.getElementById('stc').textContent=text.length+' حرف';
   const padV=Math.max(10,Math.round(fs*padPct/100));
+  const padTop=padV+Math.round(fs*0.15); // extra headroom for tall Arabic ligatures/diacritics (e.g. لا)
   const padH2=Math.round(padV*1.4);
   const bord=S.bs==='none'?'none':`${bw}px ${S.bs} ${bc}`;
   if(!S.font){
-    box.style.cssText=`background:${bg};border-radius:${br}px;border:${bord};padding:${padV}px ${padH2}px;display:inline-block`;
+    box.style.cssText=`background:${bg};border-radius:${br}px;border:${bord};padding:${padTop}px ${padH2}px ${padV}px;display:inline-block`;
     box.innerHTML='<div class="empty"><div class="ei">🔤</div><p>اختر خطاً</p></div>';
     return;
   }
@@ -1240,7 +1241,7 @@ function updatePreview(){
   let txtStyle=`color:${tc}`;
   if(S.fx.gradient) txtStyle='background:linear-gradient(135deg,#4e00f4,#6bfffd,#a600fe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text';
   if(S.fx.outline) txtStyle=`-webkit-text-stroke:2px ${tc};color:transparent`;
-  box.style.cssText=`background:${bg};border:${bord};border-radius:${br}px;padding:${padV}px ${padH2}px;text-align:${S.align};filter:${filter||'none'};display:inline-block;max-width:92%`;
+  box.style.cssText=`background:${bg};border:${bord};border-radius:${br}px;padding:${padTop}px ${padH2}px ${padV}px;text-align:${S.align};filter:${filter||'none'};display:inline-block;max-width:92%`;
   box.innerHTML=`<div id="ptxt" style="font-family:'${ff}',system-ui,sans-serif;font-size:${fs}px;font-weight:${fw};font-style:${S.italic?'italic':'normal'};text-decoration:${tDeco};letter-spacing:${ls}px;line-height:${lh};transform:rotate(${rot}deg);text-shadow:${shadow};${txtStyle};direction:auto;display:block;">${esc(text)}</div>`;
 }
 
