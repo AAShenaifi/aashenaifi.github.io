@@ -191,7 +191,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-
 
   <!-- TABS -->
   <div class="tabs">
-    <div class="tab on" id="tab-installed"  onclick="switchTab('installed')">📦 الأصلية</div>
+    <div class="tab on" id="tab-builtin"    onclick="switchTab('builtin')">🔤 مدمجة</div>
+    <div class="tab"    id="tab-installed"  onclick="switchTab('installed')">📦 الأصلية</div>
     <div class="tab"    id="tab-uploaded"   onclick="switchTab('uploaded')">☁ مرفوعة</div>
     <div class="tab"    id="tab-local"      onclick="switchTab('local')">💻 محلية</div>
   </div>
@@ -378,6 +379,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-
 <div class="toast" id="toast"></div>
 
 <script>
+const BUILTIN_CATALOG=[
+  {"file": "Cairo-VariableFont.ttf", "name": "Cairo"},
+];
 const FONT_CATALOG=[
   {"file": "Adobe Arabic Bold - [UrduFonts.com].otf", "name": "Adobe Arabic Bold"},
   {"file": "Adobe Arabic Bold Italic - [UrduFonts.com].otf", "name": "Adobe Arabic Bold Italic"},
@@ -851,25 +855,28 @@ const S={font:null,fontName:null,italic:false,underline:false,strike:false,align
   fx:{gradient:false,outline:false,neon:false,blur:false}};
 
 const installedFonts=FONT_CATALOG.map(f=>({'filename':f.file,'name':f.name,'fontFamily':null,'loaded':false,'src':'installed'}));
+const builtinFonts=BUILTIN_CATALOG.map(f=>({'filename':f.file,'name':f.name,'fontFamily':null,'loaded':false,'src':'builtin'}));
 const uploadedFonts=[];   // from Drive "Uploaded" folder
 const localFonts=[];      // uploaded locally this session
 const fontMap={};
 installedFonts.forEach(f=>fontMap[f.filename]=f);
+builtinFonts.forEach(f=>fontMap[f.filename]=f);
 
-let activeTab='installed';
+let activeTab='builtin';
 let driveToken=null;
 let driveConnected=false;
 
 // ══ TABS ══
 function switchTab(tab){
   activeTab=tab;
-  ['installed','uploaded','local'].forEach(t=>{
+  ['builtin','installed','uploaded','local'].forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('on',t===tab);
   });
   filterFonts(document.getElementById('fsearch').value);
 }
 
 function getTabList(){
+  if(activeTab==='builtin')   return builtinFonts;
   if(activeTab==='installed') return installedFonts;
   if(activeTab==='uploaded')  return uploadedFonts;
   return localFonts;
@@ -880,7 +887,7 @@ function renderList(arr){
   const list=document.getElementById('fl');
   list.innerHTML='';
   if(!arr.length){
-    const msgs={installed:'ارفع ZIP لتحميل الخطوط',uploaded:'لا توجد خطوط في Drive بعد',local:'ارفع خطوطك هنا'};
+    const msgs={builtin:'جاري تحميل الخطوط المدمجة...',installed:'ارفع ZIP لتحميل الخطوط',uploaded:'لا توجد خطوط في Drive بعد',local:'ارفع خطوطك هنا'};
     list.innerHTML=`<div style="text-align:center;color:var(--tx2);padding:14px;font-size:10px">${msgs[activeTab]||'—'}</div>`;
     return;
   }
@@ -889,7 +896,7 @@ function renderList(arr){
     el.className='fi '+(f.loaded?'ok':'miss')+(f.src==='uploaded'?' dr-loaded':f.src==='local'?' user':'');
     el.innerHTML=`<div class="fn">${f.name}</div><div class="ff">${f.filename}</div>`;
     el.addEventListener('click',()=>{
-      if(!f.loaded){showToast(f.src==='installed'?'ارفع الـ ZIP لتحميل هذا الخط':'جاري التحميل...','err');return;}
+      if(!f.loaded){showToast(f.src==='installed'?'ارفع الـ ZIP لتحميل هذا الخط':f.src==='builtin'?'جاري التحميل...':'جاري التحميل...','err');return;}
       selectFont(f);
     });
     list.appendChild(el);
@@ -901,7 +908,7 @@ function filterFonts(q){
   const src=getTabList();
   const filtered=q?src.filter(f=>f.name.toLowerCase().includes(q)||f.filename.toLowerCase().includes(q)):src;
   renderList(filtered);
-  const total=installedFonts.length+uploadedFonts.length+localFonts.length;
+  const total=builtinFonts.length+installedFonts.length+uploadedFonts.length+localFonts.length;
   document.getElementById('fcBadge').textContent=total+' خط';
 }
 
@@ -1034,7 +1041,7 @@ async function syncDriveFolder(tab){
   }
 
   document.getElementById('lc').textContent=
-    installedFonts.filter(f=>f.loaded).length+uploadedFonts.length+localFonts.length;
+    builtinFonts.filter(f=>f.loaded).length+installedFonts.filter(f=>f.loaded).length+uploadedFonts.length+localFonts.length;
   filterFonts(document.getElementById('fsearch').value);
   showToast(`✅ تم تزامن ${done} خط من Drive`,'ok');
 }
@@ -1105,7 +1112,7 @@ async function handleFiles(files){
   for(const f of arr.filter(f=>/\.(ttf|otf|woff2?)$/i.test(f.name))) await loadSingleFont(f);
   filterFonts(document.getElementById('fsearch').value);
   document.getElementById('lc').textContent=
-    installedFonts.filter(f=>f.loaded).length+uploadedFonts.length+localFonts.length;
+    builtinFonts.filter(f=>f.loaded).length+installedFonts.filter(f=>f.loaded).length+uploadedFonts.length+localFonts.length;
 }
 
 async function loadSingleFont(file){
@@ -1161,7 +1168,21 @@ async function loadFromDB(){
 }
 
 // ══ INIT ══
+async function loadBuiltinFonts(){
+  await Promise.all(builtinFonts.map(async f=>{
+    try{
+      const res=await fetch('fonts/'+f.filename);
+      const buf=await res.arrayBuffer();
+      registerFont(f.filename,buf,'builtin');
+    }catch(e){
+      console.error('Failed to load builtin font',f.filename,e);
+    }
+  }));
+  if(activeTab==='builtin') filterFonts(document.getElementById('fsearch').value);
+}
+
 async function init(){
+  await loadBuiltinFonts();
   db=await openDB();
   const n=await loadFromDB();
   const badge=document.getElementById('dbBadge');
@@ -1173,7 +1194,7 @@ async function init(){
     document.getElementById('stdb').textContent=`${n} خط محفوظ`;
   }
   document.getElementById('lc').textContent=
-    installedFonts.filter(f=>f.loaded).length+uploadedFonts.length+localFonts.length;
+    builtinFonts.filter(f=>f.loaded).length+installedFonts.filter(f=>f.loaded).length+uploadedFonts.length+localFonts.length;
   filterFonts('');
   // Try Drive auth
   updateDriveUI(false,'جاري الاتصال بـ Drive...');
