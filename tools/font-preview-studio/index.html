@@ -920,10 +920,17 @@ function getTabList(){
 }
 
 // ══ RENDER ══
-function renderList(arr){
+function renderList(arr,isSearch){
   const list=document.getElementById('fl');
   list.innerHTML='';
   if(!arr.length){
+    // Distinguish "this category has no fonts at all" from "your search matched
+    // nothing" — showing the "loading built-in fonts..." message for a zero-result
+    // search (even after fonts finished loading) reads as a broken/empty tool.
+    if(isSearch){
+      list.innerHTML=`<div style="text-align:center;color:var(--tx2);padding:14px;font-size:10px">لا نتائج مطابقة لبحثك</div>`;
+      return;
+    }
     const msgs={builtin:'جاري تحميل الخطوط المدمجة...',installed:'ارفع ZIP لتحميل الخطوط',uploaded:'لا توجد خطوط في Drive بعد',local:'ارفع خطوطك هنا'};
     list.innerHTML=`<div style="text-align:center;color:var(--tx2);padding:14px;font-size:10px">${msgs[activeTab]||'—'}</div>`;
     return;
@@ -933,7 +940,15 @@ function renderList(arr){
     el.className='fi '+(f.loaded?'ok':'miss')+(f.src==='uploaded'?' dr-loaded':f.src==='local'?' user':'');
     el.innerHTML=`<div class="fn">${f.name}</div><div class="ff">${f.filename}</div>`;
     el.addEventListener('click',()=>{
-      if(!f.loaded){showToast(f.src==='installed'?'ارفع الـ ZIP لتحميل هذا الخط':f.src==='builtin'?'جاري التحميل...':'جاري التحميل...','err');return;}
+      if(!f.loaded){
+        if(f.src==='installed'){
+          showToast('هذا الخط من مكتبتك الشخصية — ارفع ملف الـ ZIP لتحميله (اضغط هنا)','err');
+          document.getElementById('fi').click();
+        }else{
+          showToast('جاري التحميل...','err');
+        }
+        return;
+      }
       selectFont(f);
     });
     list.appendChild(el);
@@ -944,7 +959,7 @@ function filterFonts(q){
   q=q.toLowerCase();
   const src=getTabList();
   const filtered=q?src.filter(f=>f.name.toLowerCase().includes(q)||f.filename.toLowerCase().includes(q)):src;
-  renderList(filtered);
+  renderList(filtered,!!q);
   const total=builtinFonts.length+installedFonts.length+uploadedFonts.length+localFonts.length;
   document.getElementById('fcBadge').textContent=total+' خط';
 }
