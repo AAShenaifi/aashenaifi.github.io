@@ -10,7 +10,7 @@
     "viewAr": "https://drive.google.com/file/d/16Vvo1pywdQGr30anaZKNyo-XwunGXnWg/view",
     "downloadEn": "CV-Abdullah-Alshenaifi-EN.pdf",
     "downloadAr": "CV-Abdullah-Alshenaifi-AR.pdf",
-    "showPreview": false
+    "showPreview": true
   },
   "sections": {
     "about": true,
@@ -29,15 +29,15 @@
     "heroSummaryAr": "مهندس إلكترونيات وعضو في IEEE، متخصص في الأنظمة المدمجة وإنترنت الأشياء والأتمتة الصناعية والروبوتات والطباعة ثلاثية الأبعاد. أصمم وأبني أجهزة تربط بين العالم المادي والرقمي — من النموذج الأولي إلى النشر الموثوق.",
     "aboutSubEn": "Engineer · Educator · Maker",
     "aboutSubAr": "مهندس · مدرّب · صانع",
-    "aboutBioEn": "An ambitious Electronics Engineer and IEEE Professional Member with a strong foundation in IoT, robotics, and control systems. Previously an Electronics Engineer at the National Company for Glass Industries (Zoujaj), specializing in industrial systems maintenance, troubleshooting, automation, and performance optimization. Also served as a lecturer at Princess Nourah bint Abdulrahman University through June 2026, delivering practical training in Arduino programming, embedded systems, and mechatronics integration. Technical Consultant for Alamat Robotics, advising on robotics and IoT hardware from prototype through deployment. Experienced in technical instruction, product prototyping, and applied research, and professionally accredited by the Saudi Council of Engineers (SEC).",
-    "aboutBioAr": "مهندس إلكترونيات طموح وعضو محترف في IEEE، بخبرة في إنترنت الأشياء والروبوتات وأنظمة التحكم. عملت سابقًا مهندسَ إلكترونيات في الشركة الوطنية لصناعة الزجاج (زجاج)، حيث تخصصت في صيانة الأنظمة الصناعية واستكشاف الأعطال والأتمتة وتحسين الأداء. كما عملت محاضرًا في جامعة الأميرة نورة بنت عبدالرحمن حتى يونيو 2026، وقدمت تدريبًا عمليًا في برمجة الأردوينو والأنظمة المضمنة وتكامل الميكاترونكس. أعمل مستشارًا تقنيًا لدى علامات للروبوتات، حيث أقدم الاستشارات التقنية لمشاريع الروبوتات وإنترنت الأشياء من مرحلة النموذج الأولي حتى النشر. لدي خبرة في التدريب التقني وتصميم النماذج الأولية والبحث التطبيقي، ومعتمد مهنيًا من الهيئة السعودية للمهندسين."
+    "aboutBioEn": "An ambitious Electronics Engineer and IEEE Professional Member with a strong foundation in IoT, robotics, and control systems. Currently serving as an Electronics Engineer at the National Company for Glass Industries (Zoujaj), specializing in troubleshooting, automation, and industrial systems optimization. Formerly a lecturer at Princess Nourah bint Abdulrahman University, delivering practical training in Arduino programming, embedded systems, and mechatronics integration. Co-owner of Alamat Robotics, where advanced electronics and PCB designs were developed for robotics and 3D-printing projects. Experienced in technical instruction, product prototyping, and applied research, and professionally accredited by the Saudi Council of Engineers (SEC).",
+    "aboutBioAr": "مهندس إلكترونيات طموح وعضو محترف في IEEE، بخبرة في إنترنت الأشياء والروبوتات وأنظمة التحكم. أعمل حاليًا مهندسَ إلكترونيات في الشركة الوطنية لصناعة الزجاج (زجاج)، ومتخصصًا في صيانة الأنظمة الصناعية واستكشاف الأعطال والأتمتة وتحسين الأداء. عملت سابقًا محاضرًا في جامعة الأميرة نورة بنت عبدالرحمن، وقدمت تدريبًا عمليًا في برمجة الأردوينو والأنظمة المضمنة وتكامل الميكاترونكس. شريك مؤسس في علامات للروبوتات، حيث طُوّرت إلكترونيات متقدمة وتصاميم دوائر مطبوعة لمشاريع روبوتية وطباعة ثلاثية الأبعاد. لدي خبرة في التدريب التقني وتصميم النماذج الأولية والبحث التطبيقي، ومعتمد مهنيًا من الهيئة السعودية للمهندسين."
   },
   "experience": [
     {
       "en": "Alamat Robotics",
       "ar": "علامات للروبوتات",
-      "roleEn": "Technical Consultant · Apr 2019 – Present",
-      "roleAr": "مستشار تقني · أبريل 2019 – الآن",
+      "roleEn": "Co-Owner · Apr 2019 – Present",
+      "roleAr": "شريك مؤسس · أبريل 2019 – الآن",
       "url": "https://linktr.ee/alamat.robotics"
     },
     {
@@ -52,7 +52,7 @@
       "ar": "الشركة الوطنية لصناعة الزجاج (زجاج)",
       "roleEn": "Electronics Engineer · Dec 2024 – Dec 2025",
       "roleAr": "مهندس إلكترونيات · ديسمبر 2024 – ديسمبر 2025",
-      "url": "https://zoujajglass.com/en"
+      "url": null
     },
     {
       "en": "Tuwaiq Academy",
