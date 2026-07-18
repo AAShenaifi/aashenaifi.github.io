@@ -402,6 +402,22 @@ body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-
 <script>
 const BUILTIN_CATALOG=[
   {"file": "Cairo-VariableFont.ttf", "name": "Cairo"},
+  {"file": "IBMPlexSansArabic-Regular.ttf", "name": "IBM Plex Sans Arabic"},
+  {"file": "IBMPlexSansArabic-Bold.ttf", "name": "IBM Plex Sans Arabic Bold"},
+  {"file": "Ubuntu-Regular.ttf", "name": "Ubuntu"},
+  {"file": "Ubuntu-Bold.ttf", "name": "Ubuntu Bold"},
+  {"file": "Al-Awwal-Regular.ttf", "name": "Al-Awwal"},
+  {"file": "Al-Awwal-Bold.ttf", "name": "Al-Awwal Bold"},
+  {"file": "Saudi-Regular.ttf", "name": "Saudi"},
+  {"file": "Saudi-Bold.ttf", "name": "Saudi Bold"},
+  {"file": "almasmak-font.otf", "name": "Almasmak"},
+  {"file": "alnaseeb-font.otf", "name": "Alnaseeb"},
+  {"file": "watad-font.otf", "name": "Watad"},
+  {"file": "Year-of-Arabic-Font.otf", "name": "Year of Arabic"},
+  {"file": "TheYearofTheCamel-Medium.otf", "name": "Year of the Camel"},
+  {"file": "TheYearofHandicrafts-Regular.otf", "name": "Year of Handicrafts"},
+  {"file": "Solar6VF.ttf", "name": "Solar"},
+  {"file": "saudi_riyal.ttf", "name": "Saudi Riyal Symbol"},
 ];
 const FONT_CATALOG=[
   {"file": "Adobe Arabic Bold - [UrduFonts.com].otf", "name": "Adobe Arabic Bold"},
@@ -1192,7 +1208,7 @@ async function loadFromDB(){
 async function loadBuiltinFonts(){
   await Promise.all(builtinFonts.map(async f=>{
     try{
-      const res=await fetch('fonts/'+f.filename);
+      const res=await fetch('fonts/'+encodeURIComponent(f.filename));
       const buf=await res.arrayBuffer();
       registerFont(f.filename,buf,'builtin');
     }catch(e){
