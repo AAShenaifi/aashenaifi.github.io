@@ -1206,13 +1206,20 @@ async function init(){
   await loadBuiltinFonts();
   db=await openDB();
   const n=await loadFromDB();
+  const builtinCount=builtinFonts.filter(f=>f.loaded).length;
   const badge=document.getElementById('dbBadge');
-  if(n===0){
+  // The badge/banner reflect *total* usable fonts, not just ones cached from a
+  // ZIP/Drive upload — otherwise built-in fonts (like Cairo) get reported as
+  // "no fonts" even while one is loaded and actively selected.
+  if(n===0 && builtinCount===0){
     badge.textContent='⚠ لا توجد خطوط';badge.className='badge warn';
     document.getElementById('banner').classList.remove('hidden');
+  }else if(n===0){
+    badge.textContent=`🔤 ${builtinCount} خط مدمج`;badge.className='badge ok';
+    document.getElementById('stdb').textContent=`${builtinCount} خط مدمج`;
   }else{
-    badge.textContent=`💾 ${n} خط`;badge.className='badge ok';
-    document.getElementById('stdb').textContent=`${n} خط محفوظ`;
+    badge.textContent=`💾 ${n+builtinCount} خط`;badge.className='badge ok';
+    document.getElementById('stdb').textContent=`${n} خط محفوظ + ${builtinCount} مدمج`;
   }
   document.getElementById('lc').textContent=
     builtinFonts.filter(f=>f.loaded).length+installedFonts.filter(f=>f.loaded).length+uploadedFonts.length+localFonts.length;

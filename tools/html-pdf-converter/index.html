@@ -175,7 +175,9 @@ select:focus{border-color:var(--accent)}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-const { jsPDF } = window.jspdf;
+// Resolved lazily (not destructured at parse time) so a slow/blocked CDN load
+// can't throw here and take the rest of this script block down with it.
+function getJsPDF(){ return window.jspdf && window.jspdf.jsPDF; }
 let htmlContent = null, currentTab = 'url';
 const MM = 2.834645669; // mm → pt
 
@@ -357,7 +359,7 @@ async function buildPDF(raw,opts){
   const [pw,ph]=pageSizes[opts.pageSize]||pageSizes.A4;
   const M=opts.margin*MM;
   const contentW=pw-2*M;
-  const pdf=new jsPDF({orientation:'p',unit:'pt',format:opts.pageSize.toLowerCase()});
+  const pdf=new (getJsPDF())({orientation:'p',unit:'pt',format:opts.pageSize.toLowerCase()});
   let fontName='helvetica';
 
   // RTL: embed Arabic-capable font
@@ -618,6 +620,7 @@ async function convert(){
   document.getElementById('spinner').style.display='';
   btn.disabled=true;
   try{
+    if(!getJsPDF()) throw new Error('PDF engine failed to load (jsPDF from cdnjs.cloudflare.com) — check your connection or ad-blocker and reload the page.');
     let raw='',srcURL='';
     setProgress(10,'Loading content…');
     if(currentTab==='url'){
