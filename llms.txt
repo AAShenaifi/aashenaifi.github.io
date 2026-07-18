@@ -1,0 +1,46 @@
+# Abdullah Alshenaifi
+
+> Abdullah Alshenaifi (Arabic: عبدالله الشنيفي) is a Saudi Electronics Engineer and IEEE Professional Member specializing in embedded systems, IoT, industrial automation, robotics, PCB design, and 3D printing. He designs and builds hardware that bridges the physical and digital worlds — from prototype to reliable deployment.
+
+## Profile
+
+- **Name:** Abdullah Alshenaifi (عبدالله الشنيفي)
+- **Role:** Electronics Engineer
+- **Location:** Saudi Arabia
+- **Website:** https://aashenaifi.com
+- **Email:** abdullah@aashenaifi.com
+- **Accreditation:** Saudi Council of Engineers (SEC); IEEE Professional Member
+- **Focus areas:** Embedded systems, Internet of Things (IoT), industrial automation, robotics, control systems, PCB design, 3D printing
+
+## Experience
+
+- **Electronics Engineer** — The National Company for Glass Industries (Zoujaj), Dec 2024 – Dec 2025. Troubleshooting, automation, and industrial systems optimization.
+- **Lecturer** — Princess Nourah bint Abdulrahman University, Jan 2025 – Jun 2026. Practical training in Arduino programming, embedded systems, and mechatronics integration.
+- **Co-Owner** — Alamat Robotics, Apr 2019 – Present. Advanced electronics and PCB designs for robotics and 3D-printing projects.
+- **Instructor** — Tuwaiq Academy, Jul 2024 – Aug 2024.
+
+## Projects
+
+- **IoT Smart Parking System** — https://aashenaifi.com/projects/iot-smart-parking-system
+- **Smart Safety Helmet** — https://aashenaifi.com/projects/smart-safety-helmet
+- **IoT Water Monitoring (Graduation Project)** — https://aashenaifi.com/projects/iot-water-monitoring-graduation-project
+- **Custom Robotics Mainboard PCB** — https://aashenaifi.com/projects/custom-robotics-mainboard-pcb
+
+## Free Web Tools
+
+Abdullah builds and hosts free browser-based engineering utilities:
+
+- **LCD Simulator** — https://aashenaifi.com/tools/lcd-simulator/ — Simulate character/graphic LCD displays in the browser.
+- **Chroma Color Converter** — https://aashenaifi.com/tools/chroma-color-converter/ — Convert colors between HEX, RGB, HSL and print/neo formats.
+- **HTML → PDF Converter** — https://aashenaifi.com/tools/html-pdf-converter/ — Convert HTML to PDF in the browser.
+- **Font Preview Studio** — https://aashenaifi.com/tools/font-preview-studio/ — Preview and compare fonts, with built-in and uploaded font support (Arabic-friendly).
+
+## Contact & Links
+
+- LinkedIn: https://www.linkedin.com/in/AAShenaifi
+- GitHub: https://github.com/AAShenaifi
+- X (Twitter): https://x.com/aashenaifi
+- YouTube: https://www.youtube.com/@AAShenaifi
+- Instagram: https://instagram.com/AAShenaifi
+- Telegram: https://t.me/AAShenaifi
+- WhatsApp: https://wa.me/966554337765
