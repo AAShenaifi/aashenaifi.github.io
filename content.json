@@ -190,7 +190,7 @@
         "images/custom-robotics-mainboard-pcb/3d-render-bottom.png"
       ],
       "driveUrl": null,
-      "embed3d": null,
+      "embed3d": "models/custom-robotics-mainboard-pcb.glb",
       "reportPdf": null,
       "presentationVideo": null,
       "codeFile": null
