@@ -692,18 +692,20 @@ function svgToRaster(svg,w,h,mime,cb){
   img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
 }
 const FONT="font-family=\"system-ui,Segoe UI,Arial,sans-serif\"";
+function lumOf(hex){const c=hexToRgb(hex),f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return .2126*f(c.r)+.7152*f(c.g)+.0722*f(c.b);}
+function inkFor(hex){const L=lumOf(hex);return (L+.05)/.05 >= 1.05/(L+.05) ? '#101010' : '#fefcff';}
+function wrapName(t,max){const w=String(t).split(/\s+/),lines=[];let cur='';for(const x of w){if((cur+' '+x).trim().length<=max)cur=(cur+' '+x).trim();else{if(cur)lines.push(cur);cur=x;}}if(cur)lines.push(cur);if(lines.length>3){lines.length=3;lines[2]=lines[2].slice(0,max-1)+'…';}return lines;}
 function paletteSVG(){
-  const n=PAL.length,cols=n<=3?n:n<=8?4:5,rows=Math.ceil(n/cols),W=1200,pad=40,gap=20,head=90;
-  const cw=(W-pad*2-gap*(cols-1))/cols,sh=Math.min(200,cw),ch=sh+96,H=head+pad+rows*ch+(rows-1)*gap;
-  let o=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#0c0a0f"/>`;
-  o+=`<text x="${pad}" y="58" ${FONT} font-size="30" font-weight="700" fill="#fefcff">My palette</text><text x="${W-pad}" y="58" text-anchor="end" ${FONT} font-size="15" fill="#a197ad">Chroma · aashenaifi.com · ${n} colors</text>`;
+  const n=PAL.length,cols=Math.min(n,10),rows=Math.ceil(n/cols),sw=180,W=Math.max(cols*sw,720),RH=711,H=rows*RH;
+  let o=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
   PAL.forEach((x,i)=>{
-    const d=describe(x.hex),c=i%cols,r=Math.floor(i/cols),X=pad+c*(cw+gap),Y=head+r*(ch+gap);
-    o+=`<rect x="${X}" y="${Y}" width="${cw}" height="${sh}" rx="14" fill="${x.hex}" stroke="#3b2f4c"/>`;
-    o+=`<text x="${X}" y="${Y+sh+26}" ${FONT} font-size="17" font-weight="700" fill="#fefcff">${esc(x.name.length>23?x.name.slice(0,22)+'…':x.name)}</text>`;
-    o+=`<text x="${X}" y="${Y+sh+48}" ${FONT} font-size="14" fill="#e1cce8">${x.hex}  ·  RGB ${d.rgb}</text>`;
-    o+=`<text x="${X}" y="${Y+sh+68}" ${FONT} font-size="13" fill="#a197ad">CMYK ${d.cmyk}</text>`;
-    o+=`<text x="${X}" y="${Y+sh+86}" ${FONT} font-size="12" fill="#6d6379">≈ ${esc(d.pan.replace(/^PANTONE /,'').slice(0,30))} (ΔE ${d.de.toFixed(1)})</text>`;
+    const c=i%cols,r=Math.floor(i/cols),k=Math.min(cols,n-r*cols),cw=W/k,X=c*cw,Y=r*RH,cx=X+cw/2,ink=inkFor(x.hex),rgb=hexToRgb(x.hex);
+    o+=`<rect x="${X}" y="${Y}" width="${cw+.5}" height="${RH}" fill="${x.hex}"/>`;
+    const lines=(x.name&&x.name.toUpperCase()!==x.hex.toUpperCase())?wrapName(x.name,Math.max(10,Math.floor(cw/11))):[];
+    const baseY=Y+RH-34-(lines.length?lines.length*25:0);
+    o+=`<text x="${cx}" y="${baseY-36}" text-anchor="middle" ${FONT} font-size="17" fill="${ink}" fill-opacity=".62">(${rgb.r}, ${rgb.g}, ${rgb.b})</text>`;
+    o+=`<text x="${cx}" y="${baseY}" text-anchor="middle" ${FONT} font-size="25" fill="${ink}">${x.hex.toUpperCase()}</text>`;
+    lines.forEach((ln,k)=>{o+=`<text x="${cx}" y="${baseY+31+k*25}" text-anchor="middle" ${FONT} font-size="19" fill="${ink}" fill-opacity=".86">${esc(ln)}</text>`;});
   });
   return{svg:o+'</svg>',W,H};
 }
