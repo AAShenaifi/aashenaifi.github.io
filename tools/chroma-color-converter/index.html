@@ -176,6 +176,26 @@
   .pitem .ps{font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .pitem .pd{font-family:var(--mono);font-size:10px;color:var(--cyan)}
   .empty{font-family:var(--mono);font-size:12px;color:var(--muted2);padding:14px 2px}
+
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 14px}
+  .abtn{font-family:var(--mono);font-size:12px;color:var(--text);background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:9px 13px;cursor:pointer;transition:all .14s;display:inline-flex;align-items:center;gap:6px}
+  .abtn:hover{border-color:var(--violet);background:rgba(128,81,159,.14)}
+  .abtn.pri{background:var(--purple);border-color:var(--purple);color:#fff}
+  .abtn.pri:hover{background:var(--violet);border-color:var(--violet)}
+  .abtn.danger:hover{border-color:#ff5b6e;background:rgba(255,91,110,.12)}
+  .abtn[disabled]{opacity:.4;pointer-events:none}
+  .palette{margin-top:22px}
+  .palette .pbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+  .pcell{background:var(--panel2);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+  .pcell .pcs{height:64px;cursor:pointer;border-bottom:1px solid var(--line)}
+  .pcell .pcb{padding:8px 10px;min-width:0}
+  .pcell .pcn{font-family:var(--mono);font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pcell .pch{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+  .pcell .pcx{display:flex;gap:6px;margin-top:7px}
+  .pcell .pcx button{flex:1;font-family:var(--mono);font-size:10.5px;color:var(--muted);background:transparent;border:1px solid var(--line2);border-radius:7px;padding:5px 0;cursor:pointer}
+  .pcell .pcx button:hover{color:var(--text);border-color:var(--violet)}
+  .pcell .pcx button.rm:hover{border-color:#ff5b6e;color:#ff8b98}
   .disc{margin-top:16px;font-family:var(--mono);font-size:10.5px;color:var(--muted2);line-height:1.7;border:1px dashed var(--line2);border-radius:12px;padding:11px 13px}
   .disc b{color:var(--muted)}
   .disc a{color:var(--cyan)}
@@ -212,6 +232,10 @@
         <div class="swatch" id="swatch">
           <span class="hexlbl" id="swHex">#A600FE</span>
           <span class="q565" id="swQ"></span>
+        </div>
+        <div class="actions">
+          <button class="abtn pri" id="saveBtn" title="Save this color to My palette">★ Save color</button>
+          <button class="abtn" id="cardBtn" title="Download this color as an image">⬇ Color card PNG</button>
         </div>
         <div class="wheelwrap">
           <canvas id="wheel" width="256" height="256"></canvas>
@@ -262,6 +286,20 @@
     <div class="match"><div class="chip" id="panChip"></div><div class="info"><div class="lab">Nearest PMS · Solid Coated</div><div class="nm" id="panName">—</div><div class="hx" id="panHex">—</div><div class="de" id="panDe"></div></div></div>
     <div class="match"><div class="chip" id="pauChip"></div><div class="info"><div class="lab">Nearest PMS · Solid Uncoated</div><div class="nm" id="pauName">—</div><div class="hx" id="pauHex">—</div><div class="de" id="pauDe"></div></div></div>
     <div class="match"><div class="chip" id="tcxChip"></div><div class="info"><div class="lab">Nearest TCX · Fashion + Home</div><div class="nm" id="tcxName">—</div><div class="hx" id="tcxHex">—</div><div class="de" id="tcxDe"></div></div></div>
+  </div>
+
+  <div class="card palette" id="palCard">
+    <h2><span class="dot"></span>My palette · <span id="palCount">0</span> saved</h2>
+    <div class="pbar">
+      <button class="abtn" id="palPng">⬇ PNG</button>
+      <button class="abtn" id="palJpg">⬇ JPG</button>
+      <button class="abtn" id="palSvg">⬇ SVG</button>
+      <button class="abtn" id="palCss">Copy CSS</button>
+      <button class="abtn" id="palJson">⬇ JSON</button>
+      <button class="abtn danger" id="palClear">Clear all</button>
+    </div>
+    <div class="pgrid" id="palGrid"></div>
+    <div class="empty" id="palEmpty">Nothing saved yet — pick any color (or a Pantone swatch) and press <b>★ Save color</b>. Saved colors stay in this browser.</div>
   </div>
 
   <div class="card explorer">
@@ -387,7 +425,7 @@ const H={
   cdef:{label:'C',fmt:()=>`#define COLOR ${hx16(packed565(R,G,B))}`,parse:s=>{const m=String(s).match(/0x([0-9a-f]{1,4})/i);return m?rgb565ToRgb(parseInt(m[1],16)):null;}},
   cbytes:{label:'C',fmt:()=>`{${hx2(R)}, ${hx2(G)}, ${hx2(B)}}`,parse:s=>{const hxs=String(s).match(/0x[0-9a-f]{1,2}/ig);if(hxs&&hxs.length>=3)return{r:ci(parseInt(hxs[0],16)),g:ci(parseInt(hxs[1],16)),b:ci(parseInt(hxs[2],16))};const n=nums(s);return n.length>=3?{r:ci(n[0]),g:ci(n[1]),b:ci(n[2])}:null;}},
   argb:{label:'INT',fmt:()=>`0xFF${rgbToHex(R,G,B).slice(1)}`,parse:s=>{const m=String(s).replace(/[#x]/ig,'').match(/([0-9a-f]{6})$/i);return m?hexToRgb(m[1]):null;}},
-  glsl:{label:'GLSL',fmt:()=>`vec3(${(R/255).toFixed(3)}, ${(G/255).toFixed(3)}, ${(B/255).toFixed(3)})`,parse:s=>{const n=nums(s);if(n.length<3)return null;const big=n.some(x=>x>1.0001);return big?{r:ci(n[0]),g:ci(n[1]),b:ci(n[2])}:{r:ci(n[0]*255),g:ci(n[1]*255),b:ci(n[2]*255)};}},
+  glsl:{label:'GLSL',fmt:()=>`vec3(${(R/255).toFixed(3)}, ${(G/255).toFixed(3)}, ${(B/255).toFixed(3)})`,parse:s=>{const n=nums(String(s).replace(/vec[234]/ig,''));if(n.length<3)return null;const big=n.some(x=>x>1.0001);return big?{r:ci(n[0]),g:ci(n[1]),b:ci(n[2])}:{r:ci(n[0]*255),g:ci(n[1]*255),b:ci(n[2]*255)};}},
   cmyk:{label:'CMYK',fmt:()=>{const c=rgbToCmyk(R,G,B);return `cmyk(${Math.round(c.c)}%, ${Math.round(c.m)}%, ${Math.round(c.y)}%, ${Math.round(c.k)}%)`;},parse:s=>{const n=nums(s);return n.length>=4?cmykToRgb(n[0],n[1],n[2],n[3]):null;}},
   lab:{label:'LAB',fmt:()=>{const c=rgbToLab(R,G,B);return `lab(${c.L.toFixed(1)}, ${c.a.toFixed(1)}, ${c.b.toFixed(1)})`;},parse:s=>{const n=nums(s);return n.length>=3?labToRgb(n[0],n[1],n[2]):null;}},
   xyz:{label:'XYZ',fmt:()=>{const c=rgbToXyz(R,G,B);return `xyz(${c.x.toFixed(1)}, ${c.y.toFixed(1)}, ${c.z.toFixed(1)})`;},parse:s=>{const n=nums(s);return n.length>=3?xyzToRgb(n[0],n[1],n[2]):null;}},
@@ -596,6 +634,91 @@ buildLabs();buildRows();
 {const n={C:LIB.C.length,U:LIB.U.length,TCX:LIB.TCX.length};n.ALL=n.C+n.U+n.TCX;
  $('libTotal').textContent=n.ALL.toLocaleString('en-US');for(const k in n)$('n'+k).textContent=n[k].toLocaleString('en-US');}
 drawWheel(100);render();
+
+/* ===================== save / palette / image export ===================== */
+const PAL_KEY='chroma.palette.v1';
+let PAL=[];
+try{const raw=localStorage.getItem(PAL_KEY);if(raw){const a=JSON.parse(raw);if(Array.isArray(a))PAL=a.filter(x=>x&&/^#[0-9A-F]{6}$/i.test(x.hex)).slice(0,120);}}catch(_){}
+function palSave(){try{localStorage.setItem(PAL_KEY,JSON.stringify(PAL));}catch(_){toast('storage blocked — palette not kept');}}
+const ALLLIB=()=>LIB.C.concat(LIB.U,LIB.TCX);
+function describe(hex){
+  const c=hexToRgb(hex),lab=rgbToLab(c.r,c.g,c.b),n=nearestN(ALLLIB(),lab,1)[0];
+  const cm=rgbToCmyk(c.r,c.g,c.b),hs=rgbToHsl(c.r,c.g,c.b);
+  return{hex:hex.toUpperCase(),rgb:`${c.r}, ${c.g}, ${c.b}`,cmyk:`${Math.round(cm.c)}, ${Math.round(cm.m)}, ${Math.round(cm.y)}, ${Math.round(cm.k)}`,
+    hsl:`${Math.round(hs.h)}, ${Math.round(hs.s)}%, ${Math.round(hs.l)}%`,pan:n.full,panHex:n.hex,de:n.de};
+}
+function esc(t){return String(t).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+function renderPalette(){
+  $('palCount').textContent=PAL.length;
+  $('palEmpty').style.display=PAL.length?'none':'block';
+  $('palGrid').innerHTML=PAL.map((x,i)=>`<div class="pcell"><div class="pcs" data-load="${i}" style="background:${x.hex}" title="Load this color"></div><div class="pcb"><div class="pcn" title="${esc(x.name)}">${esc(x.name)}</div><div class="pch">${x.hex}</div><div class="pcx"><button data-load="${i}">open</button><button data-copy="${i}">copy</button><button class="rm" data-rm="${i}">✕</button></div></div></div>`).join('');
+  ['palPng','palJpg','palSvg','palCss','palJson','palClear'].forEach(id=>$(id).disabled=!PAL.length);
+}
+function saveCurrent(){
+  const hex=rgbToHex(R,G,B);
+  if(PAL.some(x=>x.hex===hex)){toast('already saved  '+hex);return;}
+  const d=describe(hex);
+  PAL.push({hex,name:d.de<1?d.pan.replace(/^PANTONE /,''):hex});
+  palSave();renderPalette();toast('saved  '+hex);
+}
+function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}
+function svgToRaster(svg,w,h,mime,cb){
+  const img=new Image();
+  img.onload=()=>{const cv=document.createElement('canvas');cv.width=w*2;cv.height=h*2;const x=cv.getContext('2d');
+    if(mime==='image/jpeg'){x.fillStyle='#0c0a0f';x.fillRect(0,0,cv.width,cv.height);}
+    x.drawImage(img,0,0,cv.width,cv.height);cv.toBlob(cb,mime,.95);};
+  img.onerror=()=>toast('image export failed');
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+const FONT="font-family=\"system-ui,Segoe UI,Arial,sans-serif\"";
+function paletteSVG(){
+  const n=PAL.length,cols=n<=3?n:n<=8?4:5,rows=Math.ceil(n/cols),W=1200,pad=40,gap=20,head=90;
+  const cw=(W-pad*2-gap*(cols-1))/cols,sh=Math.min(200,cw),ch=sh+96,H=head+pad+rows*ch+(rows-1)*gap;
+  let o=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#0c0a0f"/>`;
+  o+=`<text x="${pad}" y="58" ${FONT} font-size="30" font-weight="700" fill="#fefcff">My palette</text><text x="${W-pad}" y="58" text-anchor="end" ${FONT} font-size="15" fill="#a197ad">Chroma · aashenaifi.com · ${n} colors</text>`;
+  PAL.forEach((x,i)=>{
+    const d=describe(x.hex),c=i%cols,r=Math.floor(i/cols),X=pad+c*(cw+gap),Y=head+r*(ch+gap);
+    o+=`<rect x="${X}" y="${Y}" width="${cw}" height="${sh}" rx="14" fill="${x.hex}" stroke="#3b2f4c"/>`;
+    o+=`<text x="${X}" y="${Y+sh+26}" ${FONT} font-size="17" font-weight="700" fill="#fefcff">${esc(x.name.length>23?x.name.slice(0,22)+'…':x.name)}</text>`;
+    o+=`<text x="${X}" y="${Y+sh+48}" ${FONT} font-size="14" fill="#e1cce8">${x.hex}  ·  RGB ${d.rgb}</text>`;
+    o+=`<text x="${X}" y="${Y+sh+68}" ${FONT} font-size="13" fill="#a197ad">CMYK ${d.cmyk}</text>`;
+    o+=`<text x="${X}" y="${Y+sh+86}" ${FONT} font-size="12" fill="#6d6379">≈ ${esc(d.pan.replace(/^PANTONE /,'').slice(0,30))} (ΔE ${d.de.toFixed(1)})</text>`;
+  });
+  return{svg:o+'</svg>',W,H};
+}
+function cardSVG(){
+  const hex=rgbToHex(R,G,B),d=describe(hex),W=1200,H=640;
+  const near=[['Solid Coated',TOP.C[0]],['Solid Uncoated',TOP.U[0]],['TCX Fashion/Home',TOP.TCX[0]]].filter(x=>x[1]);
+  const cv=rgbToLab(R,G,B),lab=`${cv.L.toFixed(1)}, ${cv.a.toFixed(1)}, ${cv.b.toFixed(1)}`;
+  let o=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#0c0a0f"/>`;
+  o+=`<rect x="40" y="40" width="460" height="560" rx="22" fill="${hex}" stroke="#3b2f4c"/>`;
+  o+=`<text x="540" y="92" ${FONT} font-size="46" font-weight="700" fill="#fefcff">${hex}</text>`;
+  const rows=[['RGB',d.rgb],['HSL',d.hsl],['CMYK',d.cmyk+' (approx)'],['LAB',lab],['RGB565','0x'+packed565(R,G,B).toString(16).toUpperCase().padStart(4,'0')]];
+  rows.forEach((r,i)=>{o+=`<text x="540" y="${146+i*34}" ${FONT} font-size="15" fill="#6d6379">${r[0]}</text><text x="660" y="${146+i*34}" ${FONT} font-size="19" fill="#e1cce8">${esc(r[1])}</text>`;});
+  o+=`<text x="540" y="350" ${FONT} font-size="15" fill="#a197ad" letter-spacing="1">NEAREST PANTONE® (approximate)</text>`;
+  near.forEach((x,i)=>{const e=x[1],y=376+i*62;
+    o+=`<rect x="540" y="${y}" width="46" height="46" rx="9" fill="${e.hex}" stroke="#3b2f4c"/>`;
+    o+=`<text x="600" y="${y+20}" ${FONT} font-size="18" font-weight="700" fill="#fefcff">${esc(e.full.length>44?e.full.slice(0,43)+'…':e.full)}</text>`;
+    o+=`<text x="600" y="${y+40}" ${FONT} font-size="13" fill="#a197ad">${x[0]} · ${e.hex} · ΔE00 ${e.de.toFixed(2)}</text>`;});
+  o+=`<text x="540" y="596" ${FONT} font-size="12" fill="#6d6379">Unofficial screen approximation · PANTONE® is a trademark of Pantone LLC · Chroma · aashenaifi.com</text>`;
+  return{svg:o+'</svg>',W,H};
+}
+const stamp=()=>new Date().toISOString().slice(0,10);
+$('saveBtn').addEventListener('click',saveCurrent);
+$('cardBtn').addEventListener('click',()=>{const c=cardSVG();svgToRaster(c.svg,c.W,c.H,'image/png',b=>dl(b,'chroma-'+rgbToHex(R,G,B).slice(1).toLowerCase()+'.png'));});
+$('palPng').addEventListener('click',()=>{const c=paletteSVG();svgToRaster(c.svg,c.W,c.H,'image/png',b=>dl(b,'palette-'+stamp()+'.png'));});
+$('palJpg').addEventListener('click',()=>{const c=paletteSVG();svgToRaster(c.svg,c.W,c.H,'image/jpeg',b=>dl(b,'palette-'+stamp()+'.jpg'));});
+$('palSvg').addEventListener('click',()=>{dl(new Blob([paletteSVG().svg],{type:'image/svg+xml'}),'palette-'+stamp()+'.svg');});
+$('palJson').addEventListener('click',()=>{dl(new Blob([JSON.stringify(PAL.map(x=>{const d=describe(x.hex);return{name:x.name,hex:x.hex,rgb:d.rgb,cmyk:d.cmyk,nearestPantone:d.pan};}),null,2)],{type:'application/json'}),'palette-'+stamp()+'.json');});
+$('palCss').addEventListener('click',()=>{const t=':root{\n'+PAL.map((x,i)=>`  --color-${i+1}: ${x.hex}; /* ${x.name.replace(/\*\//g,'')} */`).join('\n')+'\n}';navigator.clipboard.writeText(t).then(()=>toast('CSS copied')).catch(()=>toast('copy blocked by browser'));});
+$('palClear').addEventListener('click',()=>{if(confirm('Remove all '+PAL.length+' saved colors?')){PAL=[];palSave();renderPalette();}});
+$('palGrid').addEventListener('click',e=>{
+  const t=e.target.closest('[data-load],[data-rm],[data-copy]');if(!t)return;
+  if(t.dataset.load!=null){const x=PAL[+t.dataset.load];if(x){const c=hexToRgb(x.hex);lastType='Saved';setRGB(c.r,c.g,c.b);window.scrollTo({top:0,behavior:'smooth'});}}
+  else if(t.dataset.rm!=null){PAL.splice(+t.dataset.rm,1);palSave();renderPalette();}
+  else if(t.dataset.copy!=null){const x=PAL[+t.dataset.copy];navigator.clipboard.writeText(x.hex).then(()=>toast('copied  '+x.hex)).catch(()=>toast('copy blocked by browser'));}
+});
+renderPalette();
 </script>
 </body>
 </html>

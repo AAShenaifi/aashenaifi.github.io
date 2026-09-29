@@ -1292,7 +1292,11 @@ function applyTexts(){
   if(cvWrap && cvIf){
     if(CONFIG.cv.showPreview){
       cvWrap.classList.add("show");
-      const newSrc=_cvAbs(lang==="ar"?CONFIG.cv.downloadAr:CONFIG.cv.downloadEn);
+      let newSrc=_cvAbs(lang==="ar"?CONFIG.cv.downloadAr:CONFIG.cv.downloadEn);
+      // Android browsers cannot render a PDF inside an iframe (blank box) — use the Google Drive preview instead
+      const noInlinePdf = navigator.pdfViewerEnabled===false || /Android/i.test(navigator.userAgent);
+      const drv = lang==="ar"?CONFIG.cv.viewAr:CONFIG.cv.viewEn;
+      if(noInlinePdf && drv && /drive\.google\.com\/file\/d\//.test(drv)) newSrc = drv.replace(/\/(view|edit)[^/]*$/,"/preview");
       cvIf.src="";
       requestAnimationFrame(()=>{ cvIf.src=newSrc; });
     } else {
