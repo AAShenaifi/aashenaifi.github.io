@@ -1173,6 +1173,7 @@ function renderTools(){
 let toolReturnY=0;
 function openTool(t,push){
   const view=$("#toolView"), frame=$("#toolViewFrame");
+  if(view.parentElement!==document.body) document.body.appendChild(view);
   if(!view.classList.contains("open")) toolReturnY=window.scrollY;
   $("#toolViewTitle").textContent = lang==="ar"?t.titleAr:t.titleEn;
   view.classList.remove("loaded");
