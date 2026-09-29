@@ -183,7 +183,7 @@
       "name": "What free tools does Abdullah Alshenaifi offer?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "He builds free browser-based engineering tools including an LCD Simulator, a Chroma color converter, an HTML-to-PDF converter, and a Font Preview Studio, all available at aashenaifi.com/tools."
+        "text": "He builds free browser-based engineering tools including an LCD Simulator, a Chroma color converter, an HTML-to-PDF converter, a Font Preview Studio, and a Mermaid diagram editor, all available at aashenaifi.com/tools."
       }
     }
   ]
@@ -448,6 +448,25 @@ model-viewer:active{cursor:grabbing}
 .tools-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t-3);margin-top:18px;
   padding:12px 16px;border-inline-start:2px solid rgba(212,175,55,.4);background:rgba(212,175,55,.03);border-radius:0 8px 8px 0}
 .card.clickable{cursor:pointer}
+
+/* ───────────────── IN-PAGE TOOL WORKSPACE ───────────────── */
+.tool-view{position:fixed;inset:0;z-index:250;display:none;flex-direction:column;background:var(--canvas)}
+.tool-view.open{display:flex}
+.tool-bar{display:flex;align-items:center;gap:12px;height:52px;padding:0 14px;flex-shrink:0;
+  background:rgba(12,10,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+.tool-bar .tv-btn{height:34px;min-width:34px;padding:0 12px;border-radius:9px;display:flex;align-items:center;justify-content:center;gap:7px;
+  background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--t-2);cursor:pointer;transition:.2s;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;text-decoration:none;white-space:nowrap}
+.tool-bar .tv-btn:hover{color:var(--lav-light);border-color:rgba(128,81,159,.35);background:rgba(128,81,159,.1)}
+.tool-bar .tv-btn svg{width:15px;height:15px;flex-shrink:0}
+.tool-bar .tv-title{flex:1;min-width:0;display:flex;align-items:baseline;gap:10px;overflow:hidden}
+.tool-bar .tv-title b{font-weight:700;font-size:15px;color:var(--t-1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tool-bar .tv-title span{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t-3);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.tool-view iframe{flex:1;width:100%;border:0;display:block;background:var(--canvas)}
+.tool-view .tv-load{position:absolute;inset:52px 0 0;display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t-3);pointer-events:none;transition:opacity .3s}
+.tool-view.loaded .tv-load{opacity:0}
+@media(max-width:600px){.tool-bar .tv-title span,.tool-bar .tv-btn .tv-lbl{display:none}}
 
 /* ───────────────── PROJECT DETAIL MODAL ───────────────── */
 .proj-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:24px;
@@ -752,6 +771,24 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t-4)}
     <img id="imgLightboxImg" src="" alt="" />
   </div>
 
+  <!-- ───────── TOOL WORKSPACE (tools open inside the site) ───────── -->
+  <div class="tool-view" id="toolView" role="dialog" aria-modal="true" aria-labelledby="toolViewTitle">
+    <div class="tool-bar">
+      <button class="tv-btn" id="toolViewBack" title="Back to site">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span class="tv-lbl" data-t="toolBack">Back</span>
+      </button>
+      <div class="tv-title"><b id="toolViewTitle"></b><span>aashenaifi.com / tools</span></div>
+      <button class="tv-btn" id="toolViewFull" title="Full screen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+      </button>
+      <button class="tv-btn" id="toolViewClose" title="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="tv-load" data-t="toolLoading">Loading…</div>
+    <iframe id="toolViewFrame" src="about:blank" title="Tool" allow="clipboard-read; clipboard-write; fullscreen"></iframe>
+  </div>
+
   <!-- ───────── AI TOOLS ───────── -->
   <section id="tools">
     <div class="wrap">
@@ -859,7 +896,7 @@ const T = {
     formError:"Couldn't send. Please email me directly.", formSentTitle:"Request sent", formSentMsg:"Thanks — I'll get back to you soon.",
     contactTag:"CONTACT", contactTitle:"Get in Touch", contactSubtitle:"Let's discuss your next project",
     copyEmail:"Copy Email", copyPhone:"Copy Phone", copied:"Copied!", socialTag:"SOCIAL", addToContacts:"Add to Contacts", allRights:"All rights reserved.",
-    open:"Open", visit:"Visit", dragRotate:"DRAG TO ROTATE",
+    open:"Open", visit:"Visit", toolBack:"Back", toolLoading:"Loading…", dragRotate:"DRAG TO ROTATE",
   },
   ar:{
     pressToStart:"اضغط للبدء", skip:"تخطّي ←",
@@ -884,7 +921,7 @@ const T = {
     formError:"تعذّر الإرسال. يرجى مراسلتي عبر البريد مباشرة.", formSentTitle:"تم إرسال الطلب", formSentMsg:"شكراً — سأعود إليك قريباً.",
     contactTag:"تواصل", contactTitle:"تواصل معي", contactSubtitle:"لنتحدث عن مشروعك القادم",
     copyEmail:"نسخ البريد", copyPhone:"نسخ الرقم", copied:"تم النسخ!", socialTag:"تواصل", addToContacts:"إضافة لجهات الاتصال", allRights:"جميع الحقوق محفوظة.",
-    open:"فتح", visit:"زيارة", dragRotate:"اسحب للتدوير",
+    open:"فتح", visit:"زيارة", toolBack:"رجوع", toolLoading:"جاري التحميل…", dragRotate:"اسحب للتدوير",
   }
 };
 
@@ -930,10 +967,11 @@ let PROJECTS = [
 ];
 
 let TOOLS = [
-  {titleEn:"LCD Simulator", titleAr:"محاكي شاشات LCD", descEn:"Simulate character-LCD output and generate the matching microcontroller code.", descAr:"محاكاة شاشات LCD النصية وتوليد كود المتحكم المطابق.", url:"https://lcd-simulatorcode.netlify.app/", tags:["Embedded","Codegen"], badge:"wip"},
-  {titleEn:"Chroma — Color Converter", titleAr:"كروما — محوّل الألوان", descEn:"Convert and explore colors across HEX, RGB, HSL and more, with handy palettes.", descAr:"تحويل واستكشاف الألوان بين HEX و RGB و HSL والمزيد مع لوحات جاهزة.", url:"https://chroma-color-converter.netlify.app", tags:["Design","Utility"], badge:"demo"},
-  {titleEn:"HTML → PDF Converter", titleAr:"محوّل HTML إلى PDF", descEn:"Turn HTML content into clean, downloadable PDF documents in the browser.", descAr:"تحويل محتوى HTML إلى ملفات PDF نظيفة قابلة للتحميل من المتصفح.", url:"https://htmltopdfconv.netlify.app/", tags:["Document","Export"], badge:"demo"},
-  {titleEn:"Font Preview Studio", titleAr:"استوديو معاينة الخطوط", descEn:"Preview, compare and audition typefaces with live custom text and styling.", descAr:"معاينة ومقارنة الخطوط مع نص مخصص حي وتنسيقات مباشرة.", url:"https://font-preview-studio.netlify.app/", tags:["Typography","Design"], badge:"wip"},
+  {titleEn:"LCD Simulator", titleAr:"محاكي شاشات LCD", descEn:"Simulate character-LCD output and generate the matching microcontroller code.", descAr:"محاكاة شاشات LCD النصية وتوليد كود المتحكم المطابق.", url:"tools/lcd-simulator/", tags:["Embedded","Codegen"], badge:"wip"},
+  {titleEn:"Chroma — Color Converter", titleAr:"كروما — محوّل الألوان", descEn:"Convert colors across HEX, RGB, HSL, CMYK and RGB565, and find the nearest Pantone® match from 7,000+ colors.", descAr:"تحويل الألوان بين HEX و RGB و HSL و CMYK و RGB565، وإيجاد أقرب لون Pantone® من أكثر من 7,000 لون.", url:"tools/chroma-color-converter/", tags:["Design","Utility"], badge:"demo"},
+  {titleEn:"HTML → PDF Converter", titleAr:"محوّل HTML إلى PDF", descEn:"Turn HTML content into clean, downloadable PDF documents in the browser.", descAr:"تحويل محتوى HTML إلى ملفات PDF نظيفة قابلة للتحميل من المتصفح.", url:"tools/html-pdf-converter/", tags:["Document","Export"], badge:"demo"},
+  {titleEn:"Font Preview Studio", titleAr:"استوديو معاينة الخطوط", descEn:"Preview, compare and audition typefaces with live custom text and styling.", descAr:"معاينة ومقارنة الخطوط مع نص مخصص حي وتنسيقات مباشرة.", url:"tools/font-preview-studio/", tags:["Typography","Design"], badge:"wip"},
+  {titleEn:"Mermaid Studio", titleAr:"استوديو Mermaid", descEn:"Write Mermaid code and get live flowcharts, sequence, class, state, ER and Gantt diagrams. Export as SVG or PNG.", descAr:"اكتب كود Mermaid واحصل فورًا على مخططات انسيابية وتسلسلية وغيرها، مع تصدير SVG أو PNG.", url:"tools/mermaid-studio/", tags:["Diagrams","Export"], badge:"demo"},
 ];
 
 let SOCIALS = [
@@ -1094,23 +1132,89 @@ function route(){
   if(mProj){
     const list=PROJECTS.filter(p=>p.visible!==false);
     const idx=list.findIndex(p=>projectSlug(p)===mProj[1]);
-    if(idx>=0){ openProjectDetail(idx,false); return; }
+    if(idx>=0){ closeTool(false); openProjectDetail(idx,false); return; }
+  }
+  const mTool=path.match(/^\/tools?\/([^/]+)$/i);
+  if(mTool){
+    const t=visibleTools().find(x=>isLocalTool(x)&&toolSlug(x)===mTool[1].toLowerCase());
+    if(t){ closeDetailModal(false); openTool(t,false); return; }
   }
   closeDetailModal(false);
+  closeTool(false);
 }
 window.addEventListener("popstate",route);
 
+/* Tools with a local path (tools/<folder>/) open inside the site in the
+   tool workspace, at a /tool/<slug> address. External http(s) tools still
+   open normally. */
+const visibleTools = () => TOOLS.filter(t=>t.visible!==false);
+const isLocalTool = t => !!t.url && !/^https?:\/\//i.test(t.url) && safeUrl(t.url)!=="#";
+const toolSlug = t => { const m=String(t.url||"").match(/tools\/([^/?#]+)/i); return m?m[1].toLowerCase():slugify(t.titleEn); };
+const toolHref = t => isLocalTool(t) ? window.APP_BASE+"/tool/"+toolSlug(t) : safeUrl(t.url);
+
 function renderTools(){
-  $("#toolsGrid").innerHTML = TOOLS.filter(t=>t.visible!==false).map((t,i)=>{
+  $("#toolsGrid").innerHTML = visibleTools().map((t,i)=>{
     const title=esc(lang==="ar"?t.titleAr:t.titleEn), desc=esc(lang==="ar"?t.descAr:t.descEn);
     const tags=(t.tags||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join("");
     const badge=t.badge==="wip"?`<span class="badge wip">IN&nbsp;TESTING</span>`:`<span class="badge demo">DEMO</span>`;
     return `<div class="card clickable" data-tool-idx="${i}"><div class="corner"></div><div class="pnum">T${String(i+1).padStart(2,"0")}</div>${badge}
       <h3>${title}</h3><p style="margin-top:8px">${desc}</p><div class="tags">${tags}</div>
-      <div class="links"><a class="icbtn" href="${safeUrl(t.url)}" title="${L('visit')}" onclick="event.stopPropagation()">${arrowSvg}</a></div></div>`;
+      <div class="links"><a class="icbtn" href="${esc(toolHref(t))}" title="${L(isLocalTool(t)?'open':'visit')}" data-tool-link="${i}">${arrowSvg}</a></div></div>`;
   }).join("");
-  $$("#toolsGrid .card[data-tool-idx]").forEach((c,i)=>c.onclick=()=>{ location.href=safeUrl(TOOLS.filter(t=>t.visible!==false)[i].url); });
+  const launch=(i,e)=>{
+    const t=visibleTools()[i]; if(!t) return;
+    if(isLocalTool(t)){ if(e){ if(e.metaKey||e.ctrlKey||e.shiftKey) return; e.preventDefault(); } e&&e.stopPropagation(); openTool(t,true); }
+    else if(!e || e.currentTarget.tagName!=="A"){ location.href=safeUrl(t.url); }
+  };
+  $$("#toolsGrid .card[data-tool-idx]").forEach(c=>c.onclick=e=>launch(+c.dataset.toolIdx,null));
+  $$("#toolsGrid [data-tool-link]").forEach(a=>a.onclick=e=>{ e.stopPropagation(); launch(+a.dataset.toolLink,e); });
 }
+
+let toolReturnY=0;
+function openTool(t,push){
+  const view=$("#toolView"), frame=$("#toolViewFrame");
+  if(!view.classList.contains("open")) toolReturnY=window.scrollY;
+  $("#toolViewTitle").textContent = lang==="ar"?t.titleAr:t.titleEn;
+  view.classList.remove("loaded");
+  const src=localAsset(t.url);
+  if(frame.dataset.src!==src){ frame.dataset.src=src; frame.src=src; } else view.classList.add("loaded");
+  view.classList.add("open");
+  document.documentElement.style.overflow="hidden";
+  if(push) history.pushState(null,"",window.APP_BASE+"/tool/"+toolSlug(t));
+  document.title=(lang==="ar"?t.titleAr:t.titleEn)+" — Abdullah Alshenaifi";
+}
+function closeTool(push){
+  const view=$("#toolView"); if(!view.classList.contains("open")) return;
+  view.classList.remove("open");
+  document.documentElement.style.overflow="";
+  if(document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+  document.title=DEFAULT_TITLE;
+  if(push!==false && /^\/tool\//i.test(currentPath())) history.pushState(null,"",window.APP_BASE+"/");
+  window.scrollTo(0,toolReturnY);
+}
+const DEFAULT_TITLE=document.title;
+// inside the workspace the tool's own "← back to site" strip is redundant
+$("#toolViewFrame").addEventListener("load",()=>{
+  const f=$("#toolViewFrame"); if(f.src==="about:blank") return;
+  $("#toolView").classList.add("loaded");
+  try{
+    const d=f.contentDocument;
+    if(d && d.head && !d.getElementById("inSiteStyle")){
+      const s=d.createElement("style"); s.id="inSiteStyle"; s.textContent=".backbar{display:none!important}"; d.head.appendChild(s);
+    }
+    // any link inside a tool that points back to the site closes the workspace instead of nesting it
+    d && d.addEventListener("click",e=>{
+      const a=e.target.closest && e.target.closest("a[href]"); if(!a) return;
+      const u=new URL(a.getAttribute("href"),f.contentWindow.location.href);
+      if(u.origin===location.origin && /\/(index\.html)?$/i.test(u.pathname) && !/\/tools\//i.test(u.pathname)){ e.preventDefault(); closeTool(true); }
+    });
+  }catch(_){}
+});
+$("#toolViewBack").onclick=()=>closeTool(true);
+$("#toolViewClose").onclick=()=>closeTool(true);
+$("#toolViewFull").onclick=()=>{ const v=$("#toolView"); if(document.fullscreenElement) document.exitFullscreen(); else if(v.requestFullscreen) v.requestFullscreen().catch(()=>{}); };
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && $("#toolView").classList.contains("open") && !document.fullscreenElement) closeTool(true); });
+
 function renderSocials(){
   $("#socials").innerHTML = SOCIALS.filter(s=>s.visible!==false).map(s=>{
     const inner = s.fill

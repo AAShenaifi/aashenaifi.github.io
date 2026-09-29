@@ -11,7 +11,7 @@
   // full path via history.replaceState and renders the matching view.
   var loc = window.location;
   var full = loc.pathname + loc.search + loc.hash;
-  var m = loc.pathname.match(/^(.*?)\/(projects|tools)\/[^/]+\/?$/i);
+  var m = loc.pathname.match(/^(.*?)\/(projects|tools|tool)\/[^/]+\/?$/i);
   var base = m ? m[1] : "";
   sessionStorage.setItem("redirectPath", m ? full.slice(base.length) : full);
   location.replace(base + "/");

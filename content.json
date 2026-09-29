@@ -209,7 +209,7 @@
       "titleAr": "محاكي شاشات LCD",
       "descEn": "Simulate character-LCD output and generate the matching microcontroller code.",
       "descAr": "محاكاة شاشات LCD النصية وتوليد كود المتحكم المطابق.",
-      "url": "https://lcd-simulatorcode.netlify.app/",
+      "url": "tools/lcd-simulator/",
       "tags": [
         "Embedded",
         "Codegen"
@@ -219,9 +219,9 @@
     {
       "titleEn": "Chroma — Color Converter",
       "titleAr": "كروما — محوّل الألوان",
-      "descEn": "Convert and explore colors across HEX, RGB, HSL and more, with handy palettes.",
-      "descAr": "تحويل واستكشاف الألوان بين HEX و RGB و HSL والمزيد مع لوحات جاهزة.",
-      "url": "https://chroma-color-converter.netlify.app",
+      "descEn": "Convert colors across HEX, RGB, HSL, CMYK and RGB565, and find the nearest Pantone® match from 7,000+ colors.",
+      "descAr": "تحويل الألوان بين HEX و RGB و HSL و CMYK و RGB565، وإيجاد أقرب لون Pantone® من أكثر من 7,000 لون.",
+      "url": "tools/chroma-color-converter/",
       "tags": [
         "Design",
         "Utility"
@@ -233,7 +233,7 @@
       "titleAr": "محوّل HTML إلى PDF",
       "descEn": "Turn HTML content into clean, downloadable PDF documents in the browser.",
       "descAr": "تحويل محتوى HTML إلى ملفات PDF نظيفة قابلة للتحميل من المتصفح.",
-      "url": "https://htmltopdfconv.netlify.app/",
+      "url": "tools/html-pdf-converter/",
       "tags": [
         "Document",
         "Export"
@@ -245,12 +245,24 @@
       "titleAr": "استوديو معاينة الخطوط",
       "descEn": "Preview, compare and audition typefaces with live custom text and styling.",
       "descAr": "معاينة ومقارنة الخطوط مع نص مخصص حي وتنسيقات مباشرة.",
-      "url": "https://font-preview-studio.netlify.app/",
+      "url": "tools/font-preview-studio/",
       "tags": [
         "Typography",
         "Design"
       ],
       "badge": "wip"
+    },
+    {
+      "titleEn": "Mermaid Studio",
+      "titleAr": "استوديو Mermaid",
+      "descEn": "Write Mermaid code and get live flowcharts, sequence, class, state, ER and Gantt diagrams. Export as SVG or PNG.",
+      "descAr": "اكتب كود Mermaid واحصل فورًا على مخططات انسيابية وتسلسلية وغيرها، مع تصدير SVG أو PNG.",
+      "url": "tools/mermaid-studio/",
+      "tags": [
+        "Diagrams",
+        "Export"
+      ],
+      "badge": "demo"
     }
   ],
   "socials": [

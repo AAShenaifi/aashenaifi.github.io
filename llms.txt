@@ -32,9 +32,10 @@
 Abdullah builds and hosts free browser-based engineering utilities:
 
 - **LCD Simulator** — https://aashenaifi.com/tools/lcd-simulator/ — Simulate character/graphic LCD displays in the browser.
-- **Chroma Color Converter** — https://aashenaifi.com/tools/chroma-color-converter/ — Convert colors between HEX, RGB, HSL and print/neo formats.
+- **Chroma Color Converter** — https://aashenaifi.com/tools/chroma-color-converter/ — Convert colors between HEX, RGB, HSL, CMYK and RGB565, with nearest-Pantone matching across 7,000+ colors.
 - **HTML → PDF Converter** — https://aashenaifi.com/tools/html-pdf-converter/ — Convert HTML to PDF in the browser.
 - **Font Preview Studio** — https://aashenaifi.com/tools/font-preview-studio/ — Preview and compare fonts, with built-in and uploaded font support (Arabic-friendly).
+- **Mermaid Studio** — https://aashenaifi.com/tools/mermaid-studio/ — Live Mermaid diagram editor with SVG and PNG export.
 
 ## Contact & Links
 
