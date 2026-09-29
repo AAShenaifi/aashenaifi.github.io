@@ -661,7 +661,28 @@ function saveCurrent(){
   PAL.push({hex,name:d.de<1?d.pan.replace(/^PANTONE /,''):hex});
   palSave();renderPalette();toast('saved  '+hex);
 }
-function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}
+const IS_TOUCH=(window.matchMedia&&matchMedia('(pointer:coarse)').matches)||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+function showSaveSheet(blob,name){
+  let s=$('saveSheet');if(!s){s=document.createElement('div');s.id='saveSheet';s.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(12,10,15,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;overflow:auto';document.body.appendChild(s);}
+  const url=URL.createObjectURL(blob),isImg=/^image\/(png|jpeg)$/.test(blob.type);
+  s.innerHTML=(isImg?`<img src="${url}" alt="${esc(name)}" style="max-width:100%;max-height:68vh;border-radius:12px;border:1px solid #3b2f4c">`:'')+`<div style="font-family:var(--mono);font-size:13px;color:#e1cce8;text-align:center">${isImg?'Long-press the image, then choose <b>Download image</b> / <b>Save to Photos</b>':'Tap the button to open the file, then save it'}</div><div style="display:flex;gap:10px"><a class="abtn pri" href="${url}" download="${esc(name)}" target="_blank" rel="noopener">⬇ Download</a><button class="abtn" id="saveSheetX">Close</button></div>`;
+  s.style.display='flex';
+  $('saveSheetX').onclick=()=>{s.style.display='none';s.innerHTML='';setTimeout(()=>URL.revokeObjectURL(url),500);};
+}
+function dl(blob,name){
+  // phones: hand the file to the system share sheet (Save to Photos / Files); desktop: normal download
+  if(IS_TOUCH&&navigator.canShare&&navigator.share){
+    try{
+      const f=new File([blob],name,{type:blob.type});
+      if(navigator.canShare({files:[f]})){
+        navigator.share({files:[f],title:name}).catch(e=>{if(e&&e.name!=='AbortError')showSaveSheet(blob,name);});
+        return;
+      }
+    }catch(_){}
+  }
+  if(IS_TOUCH){showSaveSheet(blob,name);return;}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+}
 function svgToRaster(svg,w,h,mime,cb){
   const img=new Image();
   img.onload=()=>{const cv=document.createElement('canvas');cv.width=w*2;cv.height=h*2;const x=cv.getContext('2d');
