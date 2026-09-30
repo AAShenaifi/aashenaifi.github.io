@@ -16,7 +16,7 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="Abdullah Alshenaifi (عبدالله الشنيفي) — Electronics Engineer. Embedded systems, IoT, PCB design, robotics, and 3D printing." />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; frame-src 'self' https://p3d.in https://drive.google.com https://*.netlify.app; connect-src 'self' https://formspree.io https://aashenaifi.netlify.app; worker-src 'self' blob:; object-src 'none'; base-uri 'self'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data: blob:; img-src 'self' data: https:; frame-src 'self' https://p3d.in https://drive.google.com https://*.netlify.app; connect-src 'self' https://cdn.jsdelivr.net https://formspree.io https://aashenaifi.netlify.app; worker-src 'self' blob:; object-src 'none'; base-uri 'self'" />
 <title>Abdullah Alshenaifi (عبدالله الشنيفي) — Electronics Engineer</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="favicon.svg" />
@@ -540,6 +540,13 @@ form{display:flex;flex-direction:column;gap:18px}
 .cv-preview-frame{display:none;margin-top:22px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .cv-preview-frame.show{display:block}
 .cv-preview-frame iframe{width:100%;height:76vh;min-height:520px;border:none;display:block}
+.cv-pages{height:76vh;min-height:520px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:#1a1722;padding:14px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.cv-page{position:relative;flex-shrink:0;background:#fff;box-shadow:0 6px 24px rgba(0,0,0,.45);border-radius:4px;overflow:hidden;max-width:100%}
+.cv-page canvas{display:block;width:100%;height:auto}
+.cv-page a.cv-link{position:absolute;display:block}
+.cv-pages-msg{margin:auto;color:var(--t-3);font-size:13px;font-family:'JetBrains Mono',monospace;text-align:center;padding:30px}
+.cv-pages-msg a{color:var(--lav-2,#E1CCE8);text-decoration:underline}
+@media (max-width:640px){.cv-pages{height:70vh;min-height:420px;padding:8px;gap:8px}}
 
 /* ───────────────── CONTACT ───────────────── */
 .contact-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:30px}
@@ -833,7 +840,8 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t-4)}
           </div>
         </div>
         <div id="cvPreviewWrap" class="cv-preview-frame">
-          <iframe id="cvIframe" src="" title="CV Preview" referrerpolicy="no-referrer"></iframe>
+          <div id="cvPages" class="cv-pages" role="document" aria-label="CV Preview"></div>
+          <iframe id="cvIframe" src="" title="CV Preview" referrerpolicy="no-referrer" style="display:none"></iframe>
         </div>
       </div>
     </div>
@@ -1283,28 +1291,126 @@ function applyTexts(){
   $$("[data-t]").forEach(el=>{ el.textContent = L(el.dataset.t); });
   document.documentElement.lang = lang;
   document.documentElement.dir = lang==="ar"?"rtl":"ltr";
-  $("#langBtn").textContent = lang==="ar"?"EN":"عربي";
-  $("#bootLang").textContent = lang==="ar"?"EN":"عربي";
-  // CV iframe preview follows language
-  const _cvBase = new URL("./", document.baseURI).href;
-  const _cvAbs = f => f ? (f.startsWith("http") ? f : _cvBase + f) : "";
-  const cvWrap=$("#cvPreviewWrap"), cvIf=$("#cvIframe");
-  if(cvWrap && cvIf){
-    if(CONFIG.cv.showPreview){
-      cvWrap.classList.add("show");
-      let newSrc=_cvAbs(lang==="ar"?CONFIG.cv.downloadAr:CONFIG.cv.downloadEn);
-      // Android browsers cannot render a PDF inside an iframe (blank box) — use the Google Drive preview instead
-      const noInlinePdf = navigator.pdfViewerEnabled===false || /Android/i.test(navigator.userAgent);
-      const drv = lang==="ar"?CONFIG.cv.viewAr:CONFIG.cv.viewEn;
-      if(noInlinePdf && drv && /drive\.google\.com\/file\/d\//.test(drv)) newSrc = drv.replace(/\/(view|edit)[^/]*$/,"/preview");
-      cvIf.src="";
-      requestAnimationFrame(()=>{ cvIf.src=newSrc; });
-    } else {
-      cvWrap.classList.remove("show");
-      cvIf.src="";
-    }
+  const _lb=$("#langBtn"), _bl=$("#bootLang");
+  if(_lb) _lb.textContent = lang==="ar"?"EN":"عربي";
+  if(_bl) _bl.textContent = lang==="ar"?"EN":"عربي"; // boot screen is removed after start
+  // CV preview follows language — renders the SAME PDF as the Download button, on every device
+  const cvWrap=$("#cvPreviewWrap");
+  if(cvWrap){
+    if(CONFIG.cv.showPreview){ cvWrap.classList.add("show"); CVPreview.request(); }
+    else { cvWrap.classList.remove("show"); CVPreview.clear(); }
   }
 }
+
+/* ═══════════════ CV PREVIEW (PDF.js) ═══════════════
+   Draws each page of the downloadable PDF onto a canvas, so the preview is
+   byte-for-byte the file people download — works on Android, iPhone and desktop
+   (no browser PDF plugin needed). Loads PDF.js only when the CV section is near
+   the screen. Falls back to the old iframe if PDF.js can't load. */
+const CVPreview=(function(){
+  const V="3.11.174", CDN="https://cdn.jsdelivr.net/npm/pdfjs-dist@"+V+"/";
+  let libP=null, token=0, seen=false, pending=false, lastKey="", lastW=0;
+  const box=()=>$("#cvPages"), ifr=()=>$("#cvIframe");
+  const absUrl=f=>f?(f.startsWith("http")?f:new URL("./",document.baseURI).href+f):"";
+  function loadLib(){
+    if(libP) return libP;
+    libP=new Promise((res,rej)=>{
+      if(window.pdfjsLib) return res(window.pdfjsLib);
+      const sc=document.createElement("script");
+      sc.src=CDN+"legacy/build/pdf.min.js"; sc.async=true;
+      sc.onload=()=>{
+        const lib=window.pdfjsLib; if(!lib) return rej(new Error("pdfjs missing"));
+        try{
+          const blob=new Blob(['importScripts("'+CDN+'legacy/build/pdf.worker.min.js");'],{type:"text/javascript"});
+          lib.GlobalWorkerOptions.workerPort=new Worker(URL.createObjectURL(blob));
+        }catch(e){ lib.GlobalWorkerOptions.workerSrc=CDN+"legacy/build/pdf.worker.min.js"; }
+        res(lib);
+      };
+      sc.onerror=()=>rej(new Error("pdfjs load failed"));
+      document.head.appendChild(sc);
+    });
+    libP.catch(()=>{ libP=null; });
+    return libP;
+  }
+  function msg(html){ const b=box(); if(b) b.innerHTML='<div class="cv-pages-msg">'+html+'</div>'; }
+  function fallback(url){
+    const b=box(), f=ifr(); if(!b||!f) return;
+    const drv=lang==="ar"?CONFIG.cv.viewAr:CONFIG.cv.viewEn;
+    const noInline=navigator.pdfViewerEnabled===false||/Android/i.test(navigator.userAgent);
+    const src=(noInline&&drv&&/drive\.google\.com\/file\/d\//.test(drv))?drv.replace(/\/(view|edit)[^/]*$/,"/preview"):url;
+    b.style.display="none"; f.style.display="block"; f.src=src;
+  }
+  async function render(){
+    const b=box(); if(!b) return;
+    const url=absUrl(lang==="ar"?CONFIG.cv.downloadAr:CONFIG.cv.downloadEn);
+    if(!url){ msg(""); return; }
+    const w=b.clientWidth; lastKey=url; lastW=w;
+    const my=++token;
+    b.style.display=""; const f=ifr(); if(f){ f.style.display="none"; f.src=""; }
+    msg(lang==="ar"?"جاري تحميل المعاينة…":"Loading preview…");
+    let lib;
+    try{ lib=await loadLib(); }catch(e){ if(my===token) fallback(url); return; }
+    try{
+      const doc=await lib.getDocument({url:url,cMapUrl:CDN+"cmaps/",cMapPacked:true,standardFontDataUrl:CDN+"standard_fonts/",isEvalSupported:false}).promise;
+      if(my!==token){ doc.destroy(); return; }
+      const frag=document.createDocumentFragment();
+      const avail=Math.max(200,b.clientWidth-(innerWidth<=640?16:28));
+      const dpr=Math.min(window.devicePixelRatio||1,3);
+      for(let i=1;i<=doc.numPages;i++){
+        const page=await doc.getPage(i); if(my!==token){ doc.destroy(); return; }
+        const base=page.getViewport({scale:1});
+        const cssW=Math.min(avail,900), scale=cssW/base.width;
+        const vp=page.getViewport({scale:scale*dpr});
+        const wrap=document.createElement("div"); wrap.className="cv-page";
+        wrap.style.width=cssW+"px";
+        const c=document.createElement("canvas"); c.width=Math.floor(vp.width); c.height=Math.floor(vp.height);
+        c.setAttribute("aria-label",(lang==="ar"?"صفحة ":"Page ")+i);
+        wrap.appendChild(c);
+        await page.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;
+        try{
+          const cssVp=page.getViewport({scale:scale});
+          (await page.getAnnotations()).forEach(a=>{
+            if(a.subtype!=="Link"||!a.url) return;
+            if(!/^(https?:|mailto:|tel:)/i.test(a.url)) return;
+            const r=cssVp.convertToViewportRectangle(a.rect);
+            const x=Math.min(r[0],r[2]), y=Math.min(r[1],r[3]);
+            const l=document.createElement("a"); l.className="cv-link"; l.href=a.url; l.target="_blank"; l.rel="noopener";
+            l.style.left=x+"px"; l.style.top=y+"px"; l.style.width=Math.abs(r[2]-r[0])+"px"; l.style.height=Math.abs(r[3]-r[1])+"px";
+            wrap.appendChild(l);
+          });
+        }catch(e){}
+        frag.appendChild(wrap);
+        if(i===1){ b.innerHTML=""; }
+        b.appendChild(frag);
+      }
+      doc.destroy();
+    }catch(e){
+      if(my!==token) return;
+      msg((lang==="ar"?"تعذّر عرض المعاينة. ":"Preview unavailable. ")+'<a href="'+url+'" target="_blank" rel="noopener">'+(lang==="ar"?"افتح الملف":"Open the PDF")+'</a>');
+    }
+  }
+  function request(){
+    if(!seen){ pending=true; return; }
+    const url=absUrl(lang==="ar"?CONFIG.cv.downloadAr:CONFIG.cv.downloadEn);
+    const b=box();
+    if(url===lastKey && b && b.querySelector(".cv-page") && Math.abs(b.clientWidth-lastW)<40) return;
+    render();
+  }
+  function clear(){ token++; lastKey=""; const b=box(); if(b) b.innerHTML=""; const f=ifr(); if(f) f.src=""; }
+  // start when the CV section approaches the viewport
+  function arm(){
+    const sec=$("#cvPreviewWrap"); if(!sec) return;
+    const go=()=>{ if(seen) return; seen=true; if(pending||CONFIG.cv.showPreview) request(); };
+    if("IntersectionObserver" in window){
+      const io=new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)){ io.disconnect(); go(); } },{rootMargin:"600px 0px"});
+      io.observe(sec);
+    } else go();
+  }
+  let rt=0;
+  addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if(seen&&CONFIG.cv.showPreview) request(); },300); });
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",arm); else setTimeout(arm,0);
+  return {request,clear};
+})();
 
 function renderContact(){
   const c=CONFIG.contact;
@@ -1592,6 +1698,6 @@ $("#vcardBtn").onclick=vcard;
 $("#burger").onclick=()=>{ const open=$("#header").classList.toggle("menu-open"); $("#burger").setAttribute("aria-expanded",open); };
 addEventListener("scroll",spy,{passive:true});
 // auto-reveal skip hint after 6s of inactivity (keeps button skippable)
-setTimeout(()=>{ if(!booted) $("#skipBtn").style.boxShadow="0 0 18px rgba(128,81,159,.3)"; },6000);
+setTimeout(()=>{ const sb=$("#skipBtn"); if(!booted && sb) sb.style.boxShadow="0 0 18px rgba(128,81,159,.3)"; },6000);
 </script>
 </body>
