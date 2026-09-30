@@ -196,6 +196,9 @@
   .pcell .pcx button{flex:1;font-family:var(--mono);font-size:10.5px;color:var(--muted);background:transparent;border:1px solid var(--line2);border-radius:7px;padding:5px 0;cursor:pointer}
   .pcell .pcx button:hover{color:var(--text);border-color:var(--violet)}
   .pcell .pcx button.rm:hover{border-color:#ff5b6e;color:#ff8b98}
+  .pcell .pcn{cursor:text}
+  .pcell .pcn-in{width:100%;box-sizing:border-box;font:inherit;font-size:12.5px;color:var(--text);background:rgba(0,0,0,.35);border:1px solid var(--violet);border-radius:6px;padding:3px 6px;outline:none}
+  @media (pointer:coarse){.pcell .pcn-in{font-size:16px}}
   .disc{margin-top:16px;font-family:var(--mono);font-size:10.5px;color:var(--muted2);line-height:1.7;border:1px dashed var(--line2);border-radius:12px;padding:11px 13px}
   .disc b{color:var(--muted)}
   .disc a{color:var(--cyan)}
@@ -651,7 +654,7 @@ function esc(t){return String(t).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','
 function renderPalette(){
   $('palCount').textContent=PAL.length;
   $('palEmpty').style.display=PAL.length?'none':'block';
-  $('palGrid').innerHTML=PAL.map((x,i)=>`<div class="pcell"><div class="pcs" data-load="${i}" style="background:${x.hex}" title="Load this color"></div><div class="pcb"><div class="pcn" title="${esc(x.name)}">${esc(x.name)}</div><div class="pch">${x.hex}</div><div class="pcx"><button data-load="${i}">open</button><button data-copy="${i}">copy</button><button class="rm" data-rm="${i}">✕</button></div></div></div>`).join('');
+  $('palGrid').innerHTML=PAL.map((x,i)=>`<div class="pcell"><div class="pcs" data-load="${i}" style="background:${x.hex}" title="Load this color"></div><div class="pcb"><div class="pcn" data-ren="${i}" title="Tap to rename">${esc(x.name||x.hex)}</div><div class="pch">${x.hex}</div><div class="pcx"><button data-load="${i}">open</button><button data-ren="${i}">rename</button><button data-copy="${i}">copy</button><button class="rm" data-rm="${i}">✕</button></div></div></div>`).join('');
   ['palPng','palJpg','palSvg','palCss','palJson','palClear'].forEach(id=>$(id).disabled=!PAL.length);
 }
 function saveCurrent(){
@@ -741,8 +744,20 @@ $('palSvg').addEventListener('click',()=>{dl(new Blob([paletteSVG().svg],{type:'
 $('palJson').addEventListener('click',()=>{dl(new Blob([JSON.stringify(PAL.map(x=>{const d=describe(x.hex);return{name:x.name,hex:x.hex,rgb:d.rgb,cmyk:d.cmyk,nearestPantone:d.pan};}),null,2)],{type:'application/json'}),'palette-'+stamp()+'.json');});
 $('palCss').addEventListener('click',()=>{const t=':root{\n'+PAL.map((x,i)=>`  --color-${i+1}: ${x.hex}; /* ${x.name.replace(/\*\//g,'')} */`).join('\n')+'\n}';navigator.clipboard.writeText(t).then(()=>toast('CSS copied')).catch(()=>toast('copy blocked by browser'));});
 $('palClear').addEventListener('click',()=>{if(confirm('Remove all '+PAL.length+' saved colors?')){PAL=[];palSave();renderPalette();}});
+function startRename(i){
+  const x=PAL[i];if(!x)return;
+  const cell=$('palGrid').children[i];const nameEl=cell&&cell.querySelector('.pcn');if(!nameEl)return;
+  const inp=document.createElement('input');inp.className='pcn-in';inp.maxLength=40;inp.value=x.name&&x.name!==x.hex?x.name:'';inp.placeholder='name this color';
+  nameEl.replaceWith(inp);inp.focus();inp.select();
+  let done=false;
+  const finish=save=>{if(done)return;done=true;if(save){x.name=inp.value.trim().slice(0,40)||x.hex;palSave();toast('renamed  '+x.hex);}renderPalette();};
+  inp.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();finish(true);}else if(ev.key==='Escape'){finish(false);}});
+  inp.addEventListener('blur',()=>finish(true));
+}
 $('palGrid').addEventListener('click',e=>{
-  const t=e.target.closest('[data-load],[data-rm],[data-copy]');if(!t)return;
+  if(e.target.closest('.pcn-in'))return;
+  const t=e.target.closest('[data-load],[data-rm],[data-copy],[data-ren]');if(!t)return;
+  if(t.dataset.ren!=null){startRename(+t.dataset.ren);return;}
   if(t.dataset.load!=null){const x=PAL[+t.dataset.load];if(x){const c=hexToRgb(x.hex);lastType='Saved';setRGB(c.r,c.g,c.b);window.scrollTo({top:0,behavior:'smooth'});}}
   else if(t.dataset.rm!=null){PAL.splice(+t.dataset.rm,1);palSave();renderPalette();}
   else if(t.dataset.copy!=null){const x=PAL[+t.dataset.copy];navigator.clipboard.writeText(x.hex).then(()=>toast('copied  '+x.hex)).catch(()=>toast('copy blocked by browser'));}
