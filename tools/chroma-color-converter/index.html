@@ -694,18 +694,24 @@ function svgToRaster(svg,w,h,mime,cb){
 const FONT="font-family=\"system-ui,Segoe UI,Arial,sans-serif\"";
 function lumOf(hex){const c=hexToRgb(hex),f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return .2126*f(c.r)+.7152*f(c.g)+.0722*f(c.b);}
 function inkFor(hex){const L=lumOf(hex);return (L+.05)/.05 >= 1.05/(L+.05) ? '#101010' : '#fefcff';}
-function wrapName(t,max){const w=String(t).split(/\s+/),lines=[];let cur='';for(const x of w){if((cur+' '+x).trim().length<=max)cur=(cur+' '+x).trim();else{if(cur)lines.push(cur);cur=x;}}if(cur)lines.push(cur);if(lines.length>3){lines.length=3;lines[2]=lines[2].slice(0,max-1)+'…';}return lines;}
+function wrapName(t,max){const w=String(t).split(/ +/),lines=[];let cur='';for(const x of w){if((cur+' '+x).trim().length<=max)cur=(cur+' '+x).trim();else{if(cur)lines.push(cur);cur=x;}}if(cur)lines.push(cur);if(lines.length>3){lines.length=3;lines[2]=lines[2].slice(0,max-1)+'…';}return lines;}
 function paletteSVG(){
-  const n=PAL.length,cols=Math.min(n,10),rows=Math.ceil(n/cols),sw=180,W=Math.max(cols*sw,720),RH=711,H=rows*RH;
+  const n=PAL.length,cols=Math.min(n,10),rows=Math.ceil(n/cols),sw=210,W=Math.max(cols*sw,840),RH=800,H=rows*RH;
   let o=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
   PAL.forEach((x,i)=>{
-    const c=i%cols,r=Math.floor(i/cols),k=Math.min(cols,n-r*cols),cw=W/k,X=c*cw,Y=r*RH,cx=X+cw/2,ink=inkFor(x.hex),rgb=hexToRgb(x.hex);
+    const c=i%cols,r=Math.floor(i/cols),k=Math.min(cols,n-r*cols),cw=W/k,X=c*cw,Y=r*RH,cx=X+cw/2,ink=inkFor(x.hex),rgb=hexToRgb(x.hex),d=describe(x.hex);
     o+=`<rect x="${X}" y="${Y}" width="${cw+.5}" height="${RH}" fill="${x.hex}"/>`;
-    const lines=(x.name&&x.name.toUpperCase()!==x.hex.toUpperCase())?wrapName(x.name,Math.max(10,Math.floor(cw/11))):[];
-    const baseY=Y+RH-34-(lines.length?lines.length*25:0);
-    o+=`<text x="${cx}" y="${baseY-36}" text-anchor="middle" ${FONT} font-size="17" fill="${ink}" fill-opacity=".62">(${rgb.r}, ${rgb.g}, ${rgb.b})</text>`;
-    o+=`<text x="${cx}" y="${baseY}" text-anchor="middle" ${FONT} font-size="25" fill="${ink}">${x.hex.toUpperCase()}</text>`;
-    lines.forEach((ln,k)=>{o+=`<text x="${cx}" y="${baseY+31+k*25}" text-anchor="middle" ${FONT} font-size="19" fill="${ink}" fill-opacity=".86">${esc(ln)}</text>`;});
+    const max=Math.max(12,Math.floor(cw/9.5)),pan=d.pan.replace(/^PANTONE /,'');
+    const L=[];
+    L.push({t:`(${rgb.r}, ${rgb.g}, ${rgb.b})`,s:17,o:.62,g:6});
+    L.push({t:x.hex.toUpperCase(),s:26,o:1,g:10});
+    if(x.name&&x.name.toUpperCase()!==x.hex.toUpperCase())wrapName(x.name,max).forEach(t=>L.push({t,s:19,o:.9,g:2}));
+    L.push({t:`CMYK ${d.cmyk.replace(/,/g,'')}`,s:15,o:.7,g:2,gap:12});
+    L.push({t:`HSL ${d.hsl.replace(/,/g,'')}`,s:15,o:.7,g:2});
+    if(x.name!==pan)wrapName('≈ '+pan+'\u00a0·\u00a0ΔE\u00a0'+d.de.toFixed(1),max+2).forEach((t,q)=>L.push({t,s:14,o:.6,g:1,gap:q?0:8}));
+    let total=0;L.forEach(l=>{total+=(l.gap||0)+l.s+l.g;});
+    let y=Y+RH-30-total;
+    L.forEach(l=>{y+=(l.gap||0)+l.s;o+=`<text x="${cx}" y="${y}" text-anchor="middle" ${FONT} font-size="${l.s}" fill="${ink}" fill-opacity="${l.o}">${esc(l.t)}</text>`;y+=l.g;});
   });
   return{svg:o+'</svg>',W,H};
 }
