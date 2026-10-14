@@ -205,6 +205,20 @@
   ],
   "tools": [
     {
+      "titleEn": "Mesh Studio",
+      "titleAr": "ميش ستوديو",
+      "descEn": "Browser-based 3D mesh editor and CAD/CAM workstation — cut, sculpt, slice, and prep models for printing, no install required.",
+      "descAr": "محرر مجسمات ثلاثية الأبعاد ومحطة عمل CAD/CAM تعمل من المتصفح مباشرة — قص، نحت، تقطيع، وتجهيز النماذج للطباعة بدون أي تثبيت.",
+      "url": "https://mesh.aashenaifi.com/",
+      "tags": [
+        "3D",
+        "CAD",
+        "CAM",
+        "Mesh Editor"
+      ],
+      "badge": "wip"
+    },
+    {
       "titleEn": "LCD Simulator",
       "titleAr": "محاكي شاشات LCD",
       "descEn": "Simulate character-LCD output and generate the matching microcontroller code.",
