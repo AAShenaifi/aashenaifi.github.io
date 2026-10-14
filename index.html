@@ -444,7 +444,7 @@ model-viewer:active{cursor:grabbing}
 .badge{position:absolute;top:14px;inset-inline-end:30px;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;
   text-transform:uppercase;padding:3px 8px;border-radius:99px}
 .badge.demo{color:var(--gold);background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.22)}
-.badge.wip{color:var(--blue);background:rgba(10,132,255,.08);border:1px solid rgba(10,132,255,.22)}
+.badge.wip{color:var(--blue);background:rgba(10,132,255,.08);border:1px solid rgba(10,132,255,.22)}@property --border-angle{syntax:'<angle>';inherits:false;initial-value:0deg}@keyframes borderSpin{to{--border-angle:360deg}}@keyframes newGlow{0%,100%{box-shadow:0 0 10px rgba(128,81,159,.15)}50%{box-shadow:0 0 26px rgba(10,132,255,.35)}}.card.new-tool{border:2px solid transparent;background-image:linear-gradient(rgba(22,18,29,.97),rgba(22,18,29,.97)),conic-gradient(from var(--border-angle,0deg),var(--lav),var(--blue),var(--gold),var(--lav-light),var(--lav));background-origin:border-box;background-clip:padding-box,border-box;animation:borderSpin 4s linear infinite,newGlow 2.6s ease-in-out infinite}.card.new-tool:hover{border-color:transparent}.new-pill{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--white);background:linear-gradient(90deg,rgba(128,81,159,.45),rgba(10,132,255,.45));border:1px solid rgba(225,204,232,.4);padding:3px 9px;border-radius:99px;vertical-align:middle;margin-inline-start:8px;animation:newGlow 2.2s ease-in-out infinite}
 .tools-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t-3);margin-top:18px;
   padding:12px 16px;border-inline-start:2px solid rgba(212,175,55,.4);background:rgba(212,175,55,.03);border-radius:0 8px 8px 0}
 .card.clickable{cursor:pointer}
@@ -979,7 +979,7 @@ let TOOLS = [
   {titleEn:"Chroma — Color Converter", titleAr:"كروما — محوّل الألوان", descEn:"Convert colors across HEX, RGB, HSL, CMYK and RGB565, and find the nearest Pantone® match from 7,000+ colors.", descAr:"تحويل الألوان بين HEX و RGB و HSL و CMYK و RGB565، وإيجاد أقرب لون Pantone® من أكثر من 7,000 لون.", url:"tools/chroma-color-converter/", tags:["Design","Utility"], badge:"demo"},
   {titleEn:"HTML → PDF Converter", titleAr:"محوّل HTML إلى PDF", descEn:"Turn HTML content into clean, downloadable PDF documents in the browser.", descAr:"تحويل محتوى HTML إلى ملفات PDF نظيفة قابلة للتحميل من المتصفح.", url:"tools/html-pdf-converter/", tags:["Document","Export"], badge:"demo"},
   {titleEn:"Font Preview Studio", titleAr:"استوديو معاينة الخطوط", descEn:"Preview, compare and audition typefaces with live custom text and styling.", descAr:"معاينة ومقارنة الخطوط مع نص مخصص حي وتنسيقات مباشرة.", url:"tools/font-preview-studio/", tags:["Typography","Design"], badge:"wip"},
-  {titleEn:"Mermaid Studio", titleAr:"استوديو Mermaid", descEn:"Write Mermaid code and get live flowcharts, sequence, class, state, ER and Gantt diagrams. Export as SVG or PNG.", descAr:"اكتب كود Mermaid واحصل فورًا على مخططات انسيابية وتسلسلية وغيرها، مع تصدير SVG أو PNG.", url:"tools/mermaid-studio/", tags:["Diagrams","Export"], badge:"demo"},
+  {titleEn:"Mermaid Studio", titleAr:"استوديو Mermaid", descEn:"Write Mermaid code and get live flowcharts, sequence, class, state, ER and Gantt diagrams. Export as SVG or PNG.", descAr:"اكتب كود Mermaid واحصل فورًا على مخططات انسيابية وتسلسلية وغيرها، مع تصدير SVG أو PNG.", url:"tools/mermaid-studio/", tags:["Diagrams","Export"], badge:"demo"},{titleEn:"Mesh Studio", titleAr:"ميش ستوديو", descEn:"Browser-based 3D mesh editor and CAD/CAM workstation — cut, sculpt, slice, and prep models for printing, no install required.", descAr:"محرر مجسمات ثلاثية الأبعاد ومحطة عمل CAD/CAM تعمل من المتصفح مباشرة — قص، نحت، تقطيع، وتجهيز النماذج للطباعة بدون أي تثبيت.", url:"https://mesh.aashenaifi.com/", tags:["3D","CAD","CAM","Mesh Editor"], badge:"wip", new:true},
 ];
 
 let SOCIALS = [
@@ -1164,9 +1164,9 @@ function renderTools(){
   $("#toolsGrid").innerHTML = visibleTools().map((t,i)=>{
     const title=esc(lang==="ar"?t.titleAr:t.titleEn), desc=esc(lang==="ar"?t.descAr:t.descEn);
     const tags=(t.tags||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join("");
-    const badge=t.badge==="wip"?`<span class="badge wip">IN&nbsp;TESTING</span>`:`<span class="badge demo">DEMO</span>`;
-    return `<div class="card clickable" data-tool-idx="${i}"><div class="corner"></div><div class="pnum">T${String(i+1).padStart(2,"0")}</div>${badge}
-      <h3>${title}</h3><p style="margin-top:8px">${desc}</p><div class="tags">${tags}</div>
+    const badge=t.badge==="wip"?`<span class="badge wip">IN&nbsp;TESTING</span>`:`<span class="badge demo">DEMO</span>`;const newTag=t.new?` <span class="new-pill">NEW</span>`:"";
+    return `<div class="card clickable${t.new?' new-tool':''}" data-tool-idx="${i}"><div class="corner"></div><div class="pnum">T${String(i+1).padStart(2,"0")}</div>${badge}
+      <h3>${title}${newTag}</h3><p style="margin-top:8px">${desc}</p><div class="tags">${tags}</div>
       <div class="links"><a class="icbtn" href="${esc(toolHref(t))}" title="${L(isLocalTool(t)?'open':'visit')}" data-tool-link="${i}">${arrowSvg}</a></div></div>`;
   }).join("");
   const launch=(i,e)=>{
